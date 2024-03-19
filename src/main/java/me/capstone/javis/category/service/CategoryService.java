@@ -25,6 +25,11 @@ public class CategoryService {
     private final UserRepository userRepository;
 
     public CategoryResDto makeCategory(String loginId, String name){
+        if(name == null)
+        {
+            name = "기본";
+        }
+
         User user = userRepository.findByLoginId(loginId).orElseThrow(()->new CustomException(ExceptionCode.USER_NOT_FOUND));
         Category category = Category.builder()
                 .name(name)

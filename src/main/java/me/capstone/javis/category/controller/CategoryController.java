@@ -27,7 +27,7 @@ public class CategoryController {
 
     @Operation(summary = "투두에 해당하는 카테고리 추가",description = "해당 투두의 카테고리를 셍성합니다.<br>카테고리 추가 화면")
     @PostMapping()
-    public ResponseEntity<CommonResponseDto<CategoryResDto>> createTodo(@RequestParam String name){
+    public ResponseEntity<CommonResponseDto<CategoryResDto>> createTodo(@RequestParam(required = false) String name){
         log.info("[createTodo] 해당 투두의 카테고리를 생성합니다. categoryName : {}", name);
 
         String loginId = getLoginId();
