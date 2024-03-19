@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import me.capstone.javis.category.data.domain.Category;
 import me.capstone.javis.location.data.domain.Location;
 import me.capstone.javis.todo.data.domain.Todo;
-import me.capstone.javis.user.data.domain.User;
 
 public record TodoReqDto(
         @Schema(
@@ -33,12 +32,11 @@ public record TodoReqDto(
         )
         Long locationId
 ) {
-    public static Todo toEntity(TodoReqDto todoRequestDto, User user, Category category, Location location){
+    public static Todo toEntity(TodoReqDto todoRequestDto, Category category, Location location){
         return Todo.builder()
                 .title(todoRequestDto.title())
                 .contents(todoRequestDto.contents())
                 .deadLine(todoRequestDto.deadLine())
-                .user(user)
                 .category(category)
                 .location(location)
                 .build();

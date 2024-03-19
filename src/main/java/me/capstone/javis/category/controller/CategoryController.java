@@ -30,7 +30,8 @@ public class CategoryController {
     public ResponseEntity<CommonResponseDto<CategoryResDto>> createTodo(@RequestParam String name){
         log.info("[createTodo] 해당 투두의 카테고리를 생성합니다. categoryName : {}", name);
 
-        CategoryResDto categoryResDto = categoryService.makeCategory(name);
+        String loginId = getLoginId();
+        CategoryResDto categoryResDto = categoryService.makeCategory(loginId, name);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new CommonResponseDto<>(
                         "카테고리 생성이 성공적으로 완료되었습니다.",
@@ -41,16 +42,20 @@ public class CategoryController {
     @Operation(summary = "유저의 카테고리 리스트 조회", description = "유저의 카테고리 리스트를 전부 불러옵니다.<br>투두리스트 추가 화면, 메뉴 화면")
     @GetMapping()
     public ResponseEntity<CommonResponseDto<List<String>>> getCategoryList(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        String loginId = userDetails.getUsername();
 
+        String loginId = getLoginId();
         List<String> categoryNames = categoryService.getCategoryNames(loginId);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new CommonResponseDto<>(
                         "카테고리 리스트 조회를 성공적으로 완료하였습니다.",
                         categoryNames
                 ));
+    }
+
+    public String getLoginId(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        return userDetails.getUsername();
     }
 }
 

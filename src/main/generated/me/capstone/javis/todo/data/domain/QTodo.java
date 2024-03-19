@@ -44,8 +44,6 @@ public class QTodo extends EntityPathBase<Todo> {
 
     public final StringPath title = createString("title");
 
-    public final me.capstone.javis.user.data.domain.QUser user;
-
     public QTodo(String variable) {
         this(Todo.class, forVariable(variable), INITS);
     }
@@ -64,9 +62,8 @@ public class QTodo extends EntityPathBase<Todo> {
 
     public QTodo(Class<? extends Todo> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.category = inits.isInitialized("category") ? new me.capstone.javis.category.data.domain.QCategory(forProperty("category")) : null;
+        this.category = inits.isInitialized("category") ? new me.capstone.javis.category.data.domain.QCategory(forProperty("category"), inits.get("category")) : null;
         this.location = inits.isInitialized("location") ? new me.capstone.javis.location.data.domain.QLocation(forProperty("location"), inits.get("location")) : null;
-        this.user = inits.isInitialized("user") ? new me.capstone.javis.user.data.domain.QUser(forProperty("user")) : null;
     }
 
 }

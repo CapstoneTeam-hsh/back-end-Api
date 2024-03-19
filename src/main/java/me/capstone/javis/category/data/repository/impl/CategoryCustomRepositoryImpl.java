@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Set;
 
 import static me.capstone.javis.category.data.domain.QCategory.category;
-import static me.capstone.javis.todo.data.domain.QTodo.todo;
 import static me.capstone.javis.user.data.domain.QUser.user;
 
 @Repository
@@ -25,8 +24,7 @@ public class CategoryCustomRepositoryImpl implements CategoryCustomRepository {
         List<String> tuples = jpaQueryFactory
                 .select(category.name)
                 .from(user)
-                .join(todo).on(user.id.eq(todo.user.id))
-                .join(category).on(todo.category.id.eq(category.id))
+                .join(category).on(user.id.eq(category.user.id))
                 .where(user.loginId.eq(loginId))
                 .fetch();
 

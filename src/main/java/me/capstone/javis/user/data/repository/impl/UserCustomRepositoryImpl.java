@@ -29,8 +29,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
                 List<Tuple> tuples = jpaQueryFactory
                         .select(category.id, category.name)
                         .from(user)
-                        .join(todo).on(user.id.eq(todo.user.id))
-                        .rightJoin(category).on(todo.category.id.eq(category.id))
+                        .join(category).on(user.id.eq(category.user.id))
                         .where(user.loginId.eq(loginId))
                         .fetch();
 

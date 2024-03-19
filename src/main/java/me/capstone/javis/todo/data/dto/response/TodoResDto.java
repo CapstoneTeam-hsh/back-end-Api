@@ -10,7 +10,6 @@ public record TodoResDto(
         String title,
         String contents,
         Boolean completed,
-        Long userId,
         Long categoryId,
         Long locationId
         ){
@@ -21,7 +20,6 @@ public record TodoResDto(
                 .title(todo.getTitle())
                 .contents(todo.getContents())
                 .completed(todo.getCompleted())
-                .userId(todo.getUser().getId())
                 .categoryId(todo.getCategory().getId())
                 .locationId(todo.getLocation().getId())
                 .build();
