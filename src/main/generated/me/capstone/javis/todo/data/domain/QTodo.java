@@ -33,7 +33,7 @@ public class QTodo extends EntityPathBase<Todo> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
 
-    public final StringPath deadLine = createString("deadLine");
+    public final DatePath<java.time.LocalDate> deadLine = createDate("deadLine", java.time.LocalDate.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
@@ -41,6 +41,8 @@ public class QTodo extends EntityPathBase<Todo> {
     public final DateTimePath<java.time.LocalDateTime> lastModifiedDate = _super.lastModifiedDate;
 
     public final me.capstone.javis.location.data.domain.QLocation location;
+
+    public final DatePath<java.time.LocalDate> startLine = createDate("startLine", java.time.LocalDate.class);
 
     public final StringPath title = createString("title");
 

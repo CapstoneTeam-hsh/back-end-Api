@@ -5,6 +5,8 @@ import me.capstone.javis.category.data.domain.Category;
 import me.capstone.javis.location.data.domain.Location;
 import me.capstone.javis.todo.data.domain.Todo;
 
+import java.time.LocalDate;
+
 public record TodoReqDto(
         @Schema(
                 example = "다이소 에서 살 물건들",
@@ -18,9 +20,14 @@ public record TodoReqDto(
         String contents,
         @Schema(
                 example = "2024-10-29",
+                description = "시작 시간을 작성해주세요."
+        )
+        LocalDate startLine,
+        @Schema(
+                example = "2024-10-29",
                 description = "마감 기한을 작성해주세요."
         )
-        String deadLine,
+        LocalDate deadLine,
         @Schema(
                 example = "친구",
                 description = "카테고리 이름을 작성해주세요"
@@ -32,11 +39,12 @@ public record TodoReqDto(
         )
         Long locationId
 ) {
-    public static Todo toEntity(TodoReqDto todoRequestDto, Category category, Location location){
+    public static Todo toEntity(TodoReqDto todoReqDto, Category category, Location location){
         return Todo.builder()
-                .title(todoRequestDto.title())
-                .contents(todoRequestDto.contents())
-                .deadLine(todoRequestDto.deadLine())
+                .title(todoReqDto.title())
+                .contents(todoReqDto.contents())
+                .deadLine(todoReqDto.deadLine())
+                .startLine(todoReqDto.startLine())
                 .category(category)
                 .location(location)
                 .build();

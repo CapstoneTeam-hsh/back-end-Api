@@ -7,10 +7,7 @@ import me.capstone.javis.user.data.dto.response.CategoryAndTodosResDto;
 import me.capstone.javis.user.data.repository.UserCustomRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static me.capstone.javis.category.data.domain.QCategory.category;
 import static me.capstone.javis.todo.data.domain.QTodo.todo;
@@ -45,8 +42,12 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
                 }
 
                 List<Long> categoryList = new ArrayList<>();
+                Map<Long,String> categoryNameMap = new HashMap<>();
+
                 distinctTuples.forEach(tuple -> {
-                        categoryList.add(tuple.get(category.id));
+                        Long categoryMappingId = tuple.get(category.id);
+                        categoryList.add(categoryMappingId);
+                        categoryNameMap.put(categoryMappingId,tuple.get(category.name));
                 });
 
                 List<CategoryAndTodosResDto> categoryTodos = new ArrayList<>();
@@ -65,7 +66,8 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
                                 todoTitles.add(tuple.get(todo.title));
                                 });
 
-                        String categoryName = tuples2.get(0).get(category.name);
+                        String categoryName = tuples2.isEmpty() ? categoryNameMap.get(categoryId) : tuples2.get(0).get(category.name);
+
                         categoryTodos.add(CategoryAndTodosResDto.builder()
                                         .categoryId(categoryId)
                                         .categoryName(categoryName)

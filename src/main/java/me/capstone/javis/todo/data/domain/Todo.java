@@ -10,6 +10,8 @@ import me.capstone.javis.common.domain.BaseTimeEntity;
 import me.capstone.javis.location.data.domain.Location;
 import me.capstone.javis.user.data.domain.User;
 
+import java.time.LocalDate;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -30,7 +32,10 @@ public class Todo extends BaseTimeEntity {
     private Boolean completed;
 
     @Column(nullable = false)
-    private String deadLine;
+    private LocalDate startLine;
+
+    @Column(nullable = false)
+    private LocalDate deadLine;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id",nullable = false)
@@ -42,13 +47,14 @@ public class Todo extends BaseTimeEntity {
     private Location location;
 
     @Builder
-    protected Todo(String title, String contents, String deadLine, Category category, Location location){
+    protected Todo(String title, String contents, LocalDate startLine, LocalDate deadLine, Category category, Location location){
         this.title =title;
         this.contents = contents;
-        this.completed = false;
+        this.startLine = startLine;
         this.deadLine = deadLine;
         this.category = category;
         this.location = location;
+        this.completed = false;
     }
 
     public void checkCompleted(){this.completed = !completed;}
