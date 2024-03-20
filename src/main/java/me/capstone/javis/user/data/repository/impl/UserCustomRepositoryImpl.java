@@ -4,6 +4,7 @@ import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import me.capstone.javis.user.data.dto.response.CategoryAndTodosResDto;
+import me.capstone.javis.user.data.dto.response.TodoIdAndNameResDto;
 import me.capstone.javis.user.data.repository.UserCustomRepository;
 import org.springframework.stereotype.Repository;
 
@@ -54,16 +55,19 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
 
                 for (Long categoryId : categoryList){
                         List<Tuple> tuples2 = jpaQueryFactory
-                                .select(category.id, category.name, todo.title)
+                                .select(category.id, category.name,todo.id, todo.title)
                                 .from(category)
                                 .join(todo).on(category.id.eq(todo.category.id))
                                 .where(category.id.eq(categoryId))
                                 .fetch();
 
 
-                        List<String> todoTitles = new ArrayList<>();
+                        List<TodoIdAndNameResDto> todoList = new ArrayList<>();
                         tuples2.forEach(tuple -> {
-                                todoTitles.add(tuple.get(todo.title));
+                                todoList.add(TodoIdAndNameResDto.builder()
+                                        .todoId(tuple.get(todo.id))
+                                        .title(tuple.get(todo.title))
+                                        .build());
                                 });
 
                         String categoryName = tuples2.isEmpty() ? categoryNameMap.get(categoryId) : tuples2.get(0).get(category.name);
@@ -71,7 +75,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
                         categoryTodos.add(CategoryAndTodosResDto.builder()
                                         .categoryId(categoryId)
                                         .categoryName(categoryName)
-                                        .todoTitleList(todoTitles)
+                                        .todoList(todoList)
                                         .build());
 
                 }
