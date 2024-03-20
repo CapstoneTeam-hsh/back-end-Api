@@ -22,12 +22,12 @@ public record TodoReqDto(
                 example = "2024-10-29",
                 description = "시작 시간을 작성해주세요."
         )
-        LocalDate startLine,
+        String startLine,
         @Schema(
                 example = "2024-10-29",
                 description = "마감 기한을 작성해주세요."
         )
-        LocalDate deadLine,
+        String deadLine,
         @Schema(
                 example = "친구",
                 description = "카테고리 이름을 작성해주세요"

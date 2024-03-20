@@ -12,8 +12,8 @@ public record TodoResDto(
         String title,
         String contents,
         Boolean completed,
-        LocalDate startLine,
-        LocalDate deadLine,
+        String startLine,
+        String deadLine,
         Long categoryId,
         Long locationId
         ){

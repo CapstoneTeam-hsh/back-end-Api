@@ -32,10 +32,10 @@ public class Todo extends BaseTimeEntity {
     private Boolean completed;
 
     @Column(nullable = false)
-    private LocalDate startLine;
+    private String startLine;
 
     @Column(nullable = false)
-    private LocalDate deadLine;
+    private String deadLine;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id",nullable = false)
@@ -47,7 +47,7 @@ public class Todo extends BaseTimeEntity {
     private Location location;
 
     @Builder
-    protected Todo(String title, String contents, LocalDate startLine, LocalDate deadLine, Category category, Location location){
+    protected Todo(String title, String contents, String startLine, String deadLine, Category category, Location location){
         this.title =title;
         this.contents = contents;
         this.startLine = startLine;
