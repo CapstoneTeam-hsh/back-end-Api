@@ -7,7 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import me.capstone.javis.common.dto.CommonResponseDto;
 import me.capstone.javis.user.data.dto.request.SignInReqDto;
 import me.capstone.javis.user.data.dto.request.SignUpReqDto;
-import me.capstone.javis.user.data.dto.response.CategoryAndTodosResDto;
+import me.capstone.javis.user.data.dto.response.calendar.CategoryAndAllTodoResDto;
+import me.capstone.javis.user.data.dto.response.userhomePage.CategoryAndTodosResDto;
 import me.capstone.javis.user.data.dto.response.SignInResDto;
 import me.capstone.javis.user.data.dto.response.SignUpResDto;
 import me.capstone.javis.user.service.UserService;
@@ -99,6 +100,18 @@ public class UserController {
                 new CommonResponseDto<>(
                         "카테고리와 투두 제목들을 성공적으로 조회 완료하였습니다.",
                         categoryAndTodosResDtoList));
+    }
+
+    @Operation(summary = "카테고리와 투두 전체 내용 리턴", description = "유저의 카테고리 리스트와 각 카테고리에 해당하는 투두 전체 내영을 리턴합니다. <br> 캘린더")
+    @GetMapping("/calendar")
+    public ResponseEntity<CommonResponseDto<List<CategoryAndAllTodoResDto>>> getCategoryAndAllTodos(){
+
+        String loginId = getLoginId();
+        List<CategoryAndAllTodoResDto> categoryAndAllTodosResDtoList = userService.getCategoryAndAllTodos(loginId);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new CommonResponseDto<>(
+                        "카테고리와 투두 전체 내용 들을 성공적으로 조회 완료하였습니다.",
+                        categoryAndAllTodosResDtoList));
     }
 
     //현재 인증된 사용자의 loginId를 가져옵니다.

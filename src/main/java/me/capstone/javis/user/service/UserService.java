@@ -6,7 +6,8 @@ import me.capstone.javis.common.jwt.JwtProvider;
 import me.capstone.javis.user.data.domain.User;
 import me.capstone.javis.user.data.dto.request.SignInReqDto;
 import me.capstone.javis.user.data.dto.request.SignUpReqDto;
-import me.capstone.javis.user.data.dto.response.CategoryAndTodosResDto;
+import me.capstone.javis.user.data.dto.response.calendar.CategoryAndAllTodoResDto;
+import me.capstone.javis.user.data.dto.response.userhomePage.CategoryAndTodosResDto;
 import me.capstone.javis.user.data.dto.response.SignInResDto;
 import me.capstone.javis.user.data.dto.response.SignUpResDto;
 import me.capstone.javis.user.data.repository.UserRepository;
@@ -77,5 +78,13 @@ public class UserService {
         List<CategoryAndTodosResDto> categoryAndTodosResDtoList = userRepository.findCategoryAndTodosByLoginId(loginId);
 
         return categoryAndTodosResDtoList;
+    }
+
+    @Transactional(readOnly = true)
+    public List<CategoryAndAllTodoResDto> getCategoryAndAllTodos(String loginId){
+
+        List<CategoryAndAllTodoResDto> categoryAndAllTodoResDtoList = userRepository.findCategoryAndAllTodosByLoginId(loginId);
+
+        return categoryAndAllTodoResDtoList;
     }
 }

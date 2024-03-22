@@ -1,4 +1,4 @@
-package me.capstone.javis.user.data.dto.response;
+package me.capstone.javis.user.data.dto.response.userhomePage;
 
 import lombok.Builder;
 
