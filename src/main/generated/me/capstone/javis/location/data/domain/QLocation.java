@@ -30,6 +30,8 @@ public class QLocation extends EntityPathBase<Location> {
 
     public final StringPath name = createString("name");
 
+    public final me.capstone.javis.teamtodo.data.domain.QTeamTodo teamTodo;
+
     public final me.capstone.javis.todo.data.domain.QTodo todo;
 
     public QLocation(String variable) {
@@ -50,6 +52,7 @@ public class QLocation extends EntityPathBase<Location> {
 
     public QLocation(Class<? extends Location> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.teamTodo = inits.isInitialized("teamTodo") ? new me.capstone.javis.teamtodo.data.domain.QTeamTodo(forProperty("teamTodo"), inits.get("teamTodo")) : null;
         this.todo = inits.isInitialized("todo") ? new me.capstone.javis.todo.data.domain.QTodo(forProperty("todo"), inits.get("todo")) : null;
     }
 

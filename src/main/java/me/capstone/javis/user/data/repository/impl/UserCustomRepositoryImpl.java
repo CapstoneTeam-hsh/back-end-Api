@@ -22,7 +22,6 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
 
         private final JPAQueryFactory jpaQueryFactory;
 
-
         @Override
         public List<CategoryAndTodosResDto> findCategoryAndTodosByLoginId(String loginId) {
                 //해당 튜플에, 유저 id, 유저 이름, 유저 프로필 사진 id, 앨범 id, 앨범 이름이 들어가있다.

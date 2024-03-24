@@ -14,9 +14,14 @@ public enum ExceptionCode {
     // _Todo Exception
     TODO_NOT_FOUND(HttpStatus.NOT_FOUND,"투두를 찾을 수 없습니다."),
     // Category Exception
+    DUPLICATE_CATEGORY_NAME(HttpStatus.BAD_REQUEST,"중복된 카테고리 이름입니다."),
     CATEGORY_NOT_FOUND(HttpStatus.BAD_REQUEST,"카테고리를 찾을 수 없습니다."),
     // Location Exception
-    LOCATION_NOT_FOUND(HttpStatus.BAD_REQUEST,"좌표를 찾을 수 없습니다.");
+    LOCATION_NOT_FOUND(HttpStatus.BAD_REQUEST,"좌표를 찾을 수 없습니다."),
+    // Team Exception
+    TEAM_NOT_FOUND(HttpStatus.BAD_REQUEST,"그룹을 찾을 수 없습니다."),
+    // UserTeam Exception
+    USERTEAM_NOT_FOUND(HttpStatus.BAD_REQUEST,"해당 그룹에 가입 된 유저가 존재하지 않습니다.");
 
     private final HttpStatus status;
     private final String message;

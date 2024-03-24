@@ -1,6 +1,7 @@
 package me.capstone.javis.category.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,6 +51,20 @@ public class CategoryController {
                         "카테고리 리스트 조회를 성공적으로 완료하였습니다.",
                         categoryNames
                 ));
+    }
+
+    @Operation(summary = "유저의 카테고리 삭제", description = "유저의 카테고리를 삭제합니다.")
+    @Parameter(name = "categoryName", description = "카테고리 이름으로 유저의 카테고리를 삭제합니다.")
+    @DeleteMapping()
+    public ResponseEntity<CommonResponseDto<Void>> deleteCategory(@RequestParam("categoryName") String categoryName){
+
+        categoryService.deleteCategory(categoryName);
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new CommonResponseDto<>(
+                        "카테고리 삭제를 성공적으로 완료하였습니다.",
+                        null));
+
     }
 
     public String getLoginId(){

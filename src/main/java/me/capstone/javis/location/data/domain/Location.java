@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import me.capstone.javis.teamtodo.data.domain.TeamTodo;
 import me.capstone.javis.todo.data.domain.Todo;
 
 @Entity
@@ -28,6 +29,9 @@ public class Location {
 
     @OneToOne(mappedBy = "location")
     private Todo todo;
+
+    @OneToOne(mappedBy = "location")
+    private TeamTodo teamTodo;
 
     @Builder
     protected Location(String name, double latitude, double longitude)

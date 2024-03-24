@@ -1,13 +1,13 @@
-package me.capstone.javis.todo.data.dto.request;
+package me.capstone.javis.teamtodo.data.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import me.capstone.javis.category.data.domain.Category;
+import lombok.Builder;
 import me.capstone.javis.location.data.domain.Location;
-import me.capstone.javis.todo.data.domain.Todo;
+import me.capstone.javis.team.data.domain.Team;
+import me.capstone.javis.teamtodo.data.domain.TeamTodo;
 
-import java.time.LocalDate;
-
-public record TodoReqDto(
+@Builder
+public record TeamTodoReqDto(
         @Schema(
                 example = "다이소 에서 살 물건들",
                 description = "투두 제목을 입력해주세요."
@@ -29,24 +29,24 @@ public record TodoReqDto(
         )
         String deadLine,
         @Schema(
-                example = "친구",
-                description = "카테고리 이름을 작성해주세요"
+                example = "그룹 id",
+                description = "투두를 작성할 그룹 id를 입력해주세요"
         )
-        String categoryName,
+        Long teamId,
         @Schema(
                 example = "좌표 id",
                 description = "좌표 id 를 입력해주세요"
         )
         Long locationId
-) {
-    public static Todo toEntity(TodoReqDto todoReqDto, Category category, Location location){
-        return Todo.builder()
-                .title(todoReqDto.title())
-                .contents(todoReqDto.contents())
-                .deadLine(todoReqDto.deadLine())
-                .startLine(todoReqDto.startLine())
-                .category(category)
-                .location(location)
-                .build();
-    }
+){
+        public static TeamTodo toEntity(TeamTodoReqDto todoReqDto, Team team, Location location){
+                return TeamTodo.builder()
+                        .title(todoReqDto.title())
+                        .contents(todoReqDto.contents())
+                        .startLine(todoReqDto.startLine())
+                        .deadLine(todoReqDto.deadLine())
+                        .team(team)
+                        .location(location)
+                        .build();
+        }
 }

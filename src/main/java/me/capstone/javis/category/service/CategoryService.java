@@ -30,7 +30,14 @@ public class CategoryService {
             name = "기본";
         }
 
-        User user = userRepository.findByLoginId(loginId).orElseThrow(()->new CustomException(ExceptionCode.USER_NOT_FOUND));
+        User user = userRepository.findByLoginId(loginId).orElseThrow(() -> new CustomException(ExceptionCode.USER_NOT_FOUND));
+        List<Category> categoryList = categoryRepository.findByUser(user);
+        for(Category category: categoryList){
+            if(category.getName().equals(name)){
+                throw new CustomException(ExceptionCode.DUPLICATE_CATEGORY_NAME);
+            }
+        }
+
         Category category = Category.builder()
                 .name(name)
                 .user(user)
@@ -44,6 +51,12 @@ public class CategoryService {
         List<String> categoryNameList = categoryRepository.findCategoryName(loginId);
 
         return categoryNameList;
+    }
+
+    public void deleteCategory(String categoryName)
+    {
+        Category category = categoryRepository.findByName(categoryName).orElseThrow(() -> new CustomException(ExceptionCode.CATEGORY_NOT_FOUND));
+        categoryRepository.deleteById(category.getId());
     }
 
 

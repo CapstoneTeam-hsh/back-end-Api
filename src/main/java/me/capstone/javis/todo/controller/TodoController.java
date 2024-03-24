@@ -11,6 +11,9 @@ import me.capstone.javis.todo.data.dto.response.TodoResDto;
 import me.capstone.javis.todo.service.TodoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name ="[Todo] Todo API", description = "투두 생성, 투두 조회, 투두 삭제")
@@ -40,7 +43,8 @@ public class TodoController {
     public ResponseEntity<CommonResponseDto<TodoResDto>> createTodo(@RequestBody TodoReqDto todoReqDto){
         log.info("[createTodo]  할일을 생성합니다.");
 
-        TodoResDto todoResponseDto = todoService.saveTodo(todoReqDto);
+        String loginId = getLoginId();
+        TodoResDto todoResponseDto = todoService.saveTodo(loginId, todoReqDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(
                 new CommonResponseDto<>(
@@ -59,5 +63,14 @@ public class TodoController {
                 new CommonResponseDto<>(
                         "투두 삭제가 성공적으로 완료되었습니다.",
                         null));
+    }
+
+    public String getLoginId(){
+        //SecurityContextHolder에서 현재 인증된 사용자의 정보를 담고 있는 Authentication 객체를 가져온다.
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        //Authentcation객체가 가지고 있는 Principal 객체가 반환됩니다. 이 객체는 UserDetails 인터페이스를 구현한 사용자 정보 객체입니다.
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+        return userDetails.getUsername();
     }
 }

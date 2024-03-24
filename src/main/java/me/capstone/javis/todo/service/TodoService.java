@@ -12,6 +12,7 @@ import me.capstone.javis.todo.data.domain.Todo;
 import me.capstone.javis.todo.data.dto.request.TodoReqDto;
 import me.capstone.javis.todo.data.dto.response.TodoResDto;
 import me.capstone.javis.todo.data.repository.TodoRepository;
+import me.capstone.javis.user.data.domain.User;
 import me.capstone.javis.user.data.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,8 +33,9 @@ public class TodoService {
         return TodoResDto.toDto(todo);
     }
 
-    public TodoResDto saveTodo(TodoReqDto todoReqDto){
-        Category category = categoryRepository.findByName(todoReqDto.category()).orElseThrow(()-> new CustomException(ExceptionCode.CATEGORY_NOT_FOUND));
+    public TodoResDto saveTodo(String loginId, TodoReqDto todoReqDto){
+        User user = userRepository.findByLoginId(loginId).orElseThrow(() -> new CustomException(ExceptionCode.USER_NOT_FOUND));
+        Category category = categoryRepository.findByNameAndUser(todoReqDto.categoryName(), user).orElseThrow(()-> new CustomException(ExceptionCode.CATEGORY_NOT_FOUND));
         Location location = locationRepository.findById(todoReqDto.locationId()).orElseThrow(()-> new CustomException(ExceptionCode.LOCATION_NOT_FOUND));
 
         return  TodoResDto.toDto(todoRepository.save(TodoReqDto.toEntity(todoReqDto,category,location)));
@@ -42,4 +44,6 @@ public class TodoService {
     public void deleteTodo(Long todoId){
         todoRepository.deleteById(todoId);
     }
+
+
 }
