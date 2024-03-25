@@ -56,7 +56,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
 
                 for (Long categoryId : categoryList){
                         List<Tuple> todoIdAndTitle = jpaQueryFactory
-                                .select(category.id, category.name,todo.id, todo.title)
+                                .select(category.id, category.name,todo.id, todo.title,todo.startLine,todo.deadLine)
                                 .from(category)
                                 .join(todo).on(category.id.eq(todo.category.id))
                                 .where(category.id.eq(categoryId))
@@ -68,6 +68,8 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
                                 todoList.add(TodoIdAndNameResDto.builder()
                                         .todoId(tuple.get(todo.id))
                                         .title(tuple.get(todo.title))
+                                        .startLine(tuple.get(todo.startLine))
+                                        .deadLine(tuple.get(todo.deadLine))
                                         .build());
                                 });
 

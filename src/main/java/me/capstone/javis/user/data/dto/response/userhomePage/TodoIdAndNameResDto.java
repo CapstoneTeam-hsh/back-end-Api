@@ -5,5 +5,7 @@ import lombok.Builder;
 @Builder
 public record TodoIdAndNameResDto(
         Long todoId,
-        String title
+        String title,
+        String startLine,
+        String deadLine
 ){}
