@@ -42,9 +42,9 @@ jobs:
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
-        username: ${{ secrets.USER }}
-        port: ${{ secrets.PORT }}
-        key: ${{ secrets.KEY }}
+        username: ${{ secrets.USERNAME }}
+        port: ${{ secrets.SSH_PORT }}
+        key: ${{ secrets.PEMKEY }}
         script_stop: true
         script: |
           sh deploy/deploy.sh
