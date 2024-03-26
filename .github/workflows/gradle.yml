@@ -9,9 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK 17
@@ -28,16 +25,17 @@ jobs:
     
     - name: Build with Gradle Wrapper
       run: ./gradlew build
-    
+
     - name: Send file to the server
-      run: |
-        echo "$SSH_PEM_KEY" >> $HOME/javiskey.pem
-        chmod 400 $HOME/javiskey.pem
-        scp -i "$HOME/javiskey.pem" -o StrictHostKeyChecking=no ./build/libs/*.jar ${SSH_USER}@${SSH_HOST}:~/download
-      env:
-        SSH_USER : ${{secrets.EC2_USERNAME}}
-        SSH_HOST : ${{secrets.EC2_HOST}}
-        SSH_PEM_KEY : ${{secrets.SSH_PRIVATE_KEY}}
+      uses: appleboy/scp-action@master
+      with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PEMKEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "./build/libs/*.jar"
+          target: "~/"
+    
         
         
         
