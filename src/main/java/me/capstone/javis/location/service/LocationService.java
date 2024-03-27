@@ -2,12 +2,16 @@ package me.capstone.javis.location.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import me.capstone.javis.common.exception.customs.CustomException;
+import me.capstone.javis.common.exception.customs.ExceptionCode;
 import me.capstone.javis.location.data.domain.Location;
 import me.capstone.javis.location.data.dto.request.LocationReqDto;
-import me.capstone.javis.location.data.dto.request.UserGpsReqDto;
 import me.capstone.javis.location.data.dto.response.LocationResDto;
 import me.capstone.javis.location.data.repository.LocationRepository;
-import me.capstone.javis.location.util.CalculateUtil;
+import me.capstone.javis.todo.data.dto.response.TodoSimpleInfoResDto;
+import me.capstone.javis.todo.data.repository.TodoRepository;
+import me.capstone.javis.user.data.domain.User;
+import me.capstone.javis.user.data.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +28,9 @@ import static me.capstone.javis.location.util.CalculateUtil.calculateDistance;
 public class LocationService {
 
     private final LocationRepository locationRepository;
+    private final UserRepository userRepository;
+    private final TodoRepository todoRepository;
+
     private static double setDistance = 50.0;
 
 
@@ -36,24 +43,31 @@ public class LocationService {
         return LocationResDto.toDto(locationRepository.save(location));
     }
 
-    public List<LocationResDto> calculateLocation(String loginId, UserGpsReqDto userGpsReqDto)
+    @Transactional(readOnly = true)
+    public List<TodoSimpleInfoResDto> calculateLocation(String loginId,double latitude, double longitude)
     {
-        List<Location> locationList = new ArrayList<>();
-        List<LocationResDto> locationResDtoList = new ArrayList<>();
-        locationList = locationRepository.findAll();
+        User user = userRepository.findByLoginId(loginId).orElseThrow(()-> new CustomException(ExceptionCode.USER_NOT_FOUND));
+        List<TodoSimpleInfoResDto> todoSimpleList = todoRepository.findTodoListByUser(user);
+        List<TodoSimpleInfoResDto> resultTodoList = new ArrayList<>();
 
-        for (Location location : locationList){
-            double distance = calculateDistance(userGpsReqDto.latitude(),userGpsReqDto.longitude(),location.getLatitude(),location.getLongitude());
+        for (TodoSimpleInfoResDto todoSimple : todoSimpleList){
+            System.out.println(todoSimple);
+            double distance = calculateDistance(latitude, longitude,todoSimple.latitude(),todoSimple.longitude());
             if (distance <= setDistance) {
                 // 거리가 distance threshold 내에 있는 위치를 결과 리스트에 추가
-                locationResDtoList.add(LocationResDto.builder()
-                                .id(location.getId())
-                                .name(location.getName())
-                                .latitude(location.getLatitude())
-                                .longitude(location.getLongitude())
-                        .build());
+                resultTodoList.add(todoSimple);
             }
         }
-        return locationResDtoList;
+
+        return resultTodoList;
     }
+
+    @Transactional(readOnly = true)
+    public List<TodoSimpleInfoResDto> getUserTodo(String loginId)
+    {
+        User user = userRepository.findByLoginId(loginId).orElseThrow(()-> new CustomException(ExceptionCode.USER_NOT_FOUND));
+        List<TodoSimpleInfoResDto> todoSimpleList = todoRepository.findTodoListByUser(user);
+        return todoSimpleList;
+    }
+
 }
