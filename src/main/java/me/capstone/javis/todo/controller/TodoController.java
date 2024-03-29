@@ -7,12 +7,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.capstone.javis.common.dto.CommonResponseDto;
 import me.capstone.javis.todo.data.dto.request.TodoReqDto;
+import me.capstone.javis.todo.data.dto.request.TodoUpdateReqDto;
 import me.capstone.javis.todo.data.dto.response.TodoResDto;
 import me.capstone.javis.todo.service.TodoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,6 +52,19 @@ public class TodoController {
                 new CommonResponseDto<>(
                         "투두 생성이 성공적으로 완료되었습니다.",
                         todoResponseDto));
+    }
+
+    @Operation(summary = "투두리스트 수정", description = "투두리스트 내용을 수정합니다.")
+    @Parameter(name = "todoId",description = "수정 할 투두의 id")
+    @PutMapping("/{todoId}")
+    public ResponseEntity<CommonResponseDto<TodoResDto>> updateTodo(@PathVariable("todoId") Long todoId, @RequestBody TodoUpdateReqDto todoUpdateReqDto){
+        log.info("[updateTodo] 투두를 수정합니다.");
+        TodoResDto todoResDto = todoService.updateTodo(todoId,todoUpdateReqDto);
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new CommonResponseDto<>(
+                        "투두 수정이 성공적으로 완료되었습니다.",
+                        todoResDto));
     }
 
     @Operation(summary = "투두 삭제",description = "투두 번호로 투두를 삭제합니다.")

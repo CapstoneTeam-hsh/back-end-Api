@@ -75,6 +75,21 @@ public class TeamController {
                         userInfoResDtoList));
     }
 
+    @Operation(summary = "그룹 참여자 목록", description = "그룹에 속해있는 유저들의 이름을 조회합니다.")
+    @Parameter(name="teamId", description = "참여자를 확인 할 그룹 id")
+    @GetMapping("/users/{teamId}")
+    public ResponseEntity<CommonResponseDto<List<String>>> getTeamOfUsers(@PathVariable("teamId")Long teamId){
+
+        log.info("[getTeamOfUsers] 그룹에 속해있는 사용자 이름 조회");
+        List<String> userNameList = teamService.getTeamOfUsers(teamId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new CommonResponseDto<>(
+                        "그룹에 해당하는 유저들 조회를 성공적으로 완료하였습니다.",
+                        userNameList));
+    }
+
+
     @Operation(summary = "그룹 탈퇴", description = "그룹에서 탈퇴합니다.")
     @Parameter(name="teamId", description = "탈퇴 할 그룹의 id")
     @DeleteMapping("/{teamId}")

@@ -10,6 +10,7 @@ import me.capstone.javis.location.data.domain.Location;
 import me.capstone.javis.location.data.repository.LocationRepository;
 import me.capstone.javis.todo.data.domain.Todo;
 import me.capstone.javis.todo.data.dto.request.TodoReqDto;
+import me.capstone.javis.todo.data.dto.request.TodoUpdateReqDto;
 import me.capstone.javis.todo.data.dto.response.TodoResDto;
 import me.capstone.javis.todo.data.repository.TodoRepository;
 import me.capstone.javis.user.data.domain.User;
@@ -39,6 +40,29 @@ public class TodoService {
         Location location = locationRepository.findById(todoReqDto.locationId()).orElseThrow(()-> new CustomException(ExceptionCode.LOCATION_NOT_FOUND));
 
         return  TodoResDto.toDto(todoRepository.save(TodoReqDto.toEntity(todoReqDto,category,location)));
+    }
+
+    public TodoResDto updateTodo(Long todoId, TodoUpdateReqDto todoUpdateReqDto){
+        Todo updateTodo = todoRepository.findById(todoId).orElseThrow(()-> new CustomException(ExceptionCode.TODO_NOT_FOUND));
+
+        if (todoUpdateReqDto.title() != null && !todoUpdateReqDto.title().isEmpty())
+        {
+            updateTodo.updateTitle(todoUpdateReqDto.title());
+        }
+        if (todoUpdateReqDto.contents() != null && !todoUpdateReqDto.contents().isEmpty())
+        {
+            updateTodo.updateContent(todoUpdateReqDto.contents());
+        }
+        if (todoUpdateReqDto.startLine() != null && !todoUpdateReqDto.startLine().isEmpty())
+        {
+            updateTodo.updateStartLine(todoUpdateReqDto.startLine());
+        }
+        if (todoUpdateReqDto.deadLine() != null && !todoUpdateReqDto.deadLine().isEmpty())
+        {
+            updateTodo.updateDeadLine(todoUpdateReqDto.deadLine());
+        }
+
+        return  TodoResDto.toDto(updateTodo);
     }
 
     public void deleteTodo(Long todoId){

@@ -72,6 +72,15 @@ public class TeamService {
         return teamRepository.findAllTeamByUser(reqUser);
     }
 
+    @Transactional(readOnly = true)
+    public List<String> getTeamOfUsers(Long teamId) {
+        Team reqTeam = teamRepository.findById(teamId).orElseThrow(()-> new CustomException(ExceptionCode.TEAM_NOT_FOUND));
+
+        List<String> userNameList = teamRepository.findAllUserByTeam(reqTeam);
+
+        return userNameList;
+    }
+
     public void exitTeam(Long teamId, String loginId){
         Team team = teamRepository.findById(teamId).orElseThrow(()->new CustomException(ExceptionCode.TEAM_NOT_FOUND));
         User user = userRepository.findByLoginId(loginId).orElseThrow(()-> new CustomException(ExceptionCode.USER_NOT_FOUND));

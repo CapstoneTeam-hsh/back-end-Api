@@ -3,6 +3,7 @@ package me.capstone.javis.team.data.repository.impl;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import me.capstone.javis.team.data.domain.Team;
 import me.capstone.javis.team.data.dto.response.TeamResDto;
 import me.capstone.javis.team.data.repository.TeamCustomRepository;
 import me.capstone.javis.user.data.domain.User;
@@ -42,4 +43,19 @@ public class TeamCustomRepositoryImpl implements TeamCustomRepository {
         }
         return allTeamOfUserList;
     }
+
+    @Override
+    public List<String> findAllUserByTeam(Team reqTeam) {
+        List<String> allUserOfTeam = jpaQueryFactory
+                .select(user.name)
+                .from(team)
+                .join(userTeam).on(team.id.eq(userTeam.team.id))
+                .join(user).on(userTeam.user.id.eq(user.id))
+                .where(team.id.eq(reqTeam.getId()))
+                .fetch();
+
+        return allUserOfTeam;
+    }
+
+
 }

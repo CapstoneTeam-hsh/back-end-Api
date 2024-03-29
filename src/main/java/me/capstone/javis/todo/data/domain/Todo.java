@@ -57,5 +57,10 @@ public class Todo extends BaseTimeEntity {
         this.completed = false;
     }
 
+    public void updateTitle(String title){this.title = title;}
+    public void updateContent(String contents){this.contents = contents;}
+    public void updateStartLine(String startLine){this.startLine = startLine;}
+    public void updateDeadLine(String deadLine){this.deadLine = deadLine;}
+
     public void checkCompleted(){this.completed = !completed;}
 }
