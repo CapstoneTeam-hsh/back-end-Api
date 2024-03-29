@@ -11,6 +11,7 @@ import me.capstone.javis.user.data.dto.response.calendar.CategoryAndAllTodoResDt
 import me.capstone.javis.user.data.dto.response.userhomePage.CategoryAndTodosResDto;
 import me.capstone.javis.user.data.dto.response.SignInResDto;
 import me.capstone.javis.user.data.dto.response.SignUpResDto;
+import me.capstone.javis.user.data.dto.response.userhomePage.TeamAndTeamTodosResDto;
 import me.capstone.javis.user.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -90,8 +91,8 @@ public class UserController {
                         signInResDto));
     }
 
-    @Operation(summary = "카테고리와 투두 제목 리턴", description = "유저의 카테고리 리스트와 각 카테고리에 해당하는 투두 제목을 가져옵니다.<br> -메인 화면-")
-    @GetMapping("/homepage")
+    @Operation(summary = "유저의 카테고리들과 카테고리에 해당하는 투두들의 제목, 날짜 조회", description = "유저의 카테고리 리스트와 각 카테고리에 해당하는 투두 제목을 가져옵니다.<br> -메인 화면-")
+    @GetMapping("/homepage/category")
     public ResponseEntity<CommonResponseDto<List<CategoryAndTodosResDto>>> getCategoryAndTodos(){
 
         String loginId = getLoginId();
@@ -102,7 +103,7 @@ public class UserController {
                         categoryAndTodosResDtoList));
     }
 
-    @Operation(summary = "카테고리와 투두 전체 내용 리턴", description = "유저의 카테고리 리스트와 각 카테고리에 해당하는 투두 전체 내영을 리턴합니다. <br> 캘린더")
+    @Operation(summary = "카테고리와 투두 전체 내용 리턴", description = "유저의 카테고리 리스트와 각 카테고리에 해당하는 투두 전체 내영을 리턴합니다. <br> - 캘린더 - ")
     @GetMapping("/calendar")
     public ResponseEntity<CommonResponseDto<List<CategoryAndAllTodoResDto>>> getCategoryAndAllTodos(){
 
@@ -113,6 +114,19 @@ public class UserController {
                         "카테고리와 투두 전체 내용 들을 성공적으로 조회 완료하였습니다.",
                         categoryAndAllTodosResDtoList));
     }
+
+    @Operation(summary = "그룹 과 그룹 투두 전체 내용 리턴", description = "유저의 그룹들과 해당 그룹의 할 일 내용을 조회합니다.")
+    @GetMapping("/homepage/team")
+    public ResponseEntity<CommonResponseDto<List<TeamAndTeamTodosResDto>>> getTeamAndTeamTodos(){
+
+        String loginId = getLoginId();
+        List<TeamAndTeamTodosResDto> teamAndTeamTodosResDtoList = userService.getTeamAndAllTeamTodos(loginId);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new CommonResponseDto<>(
+                        "유저의 그룹들과 그룹 투두 들을 성공적으로 조회 완료하였습니다.",
+                        teamAndTeamTodosResDtoList));
+    }
+
 
     //현재 인증된 사용자의 loginId를 가져옵니다.
     public String getLoginId(){

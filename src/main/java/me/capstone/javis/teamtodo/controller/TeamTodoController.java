@@ -25,7 +25,7 @@ public class TeamTodoController {
 
     private final TeamTodoService todoService;
 
-    @Operation(summary = "그룹 투두 조회",description = "그룹 id로 투두들을 조회합니다.")
+    @Operation(summary = "그룹 투두 전체 조회", description = "그룹 id로 해당 그룹의 투두들을 조회합니다.")
     @Parameter(name="teamId", description = "그룹 id를 입력해주세요")
     @GetMapping("/{teamId}")
     public ResponseEntity<CommonResponseDto<List<TeamTodoResDto>>> getAllTeamTodo(@PathVariable("teamId") Long teamId){

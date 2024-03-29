@@ -10,6 +10,7 @@ import me.capstone.javis.user.data.dto.response.calendar.CategoryAndAllTodoResDt
 import me.capstone.javis.user.data.dto.response.userhomePage.CategoryAndTodosResDto;
 import me.capstone.javis.user.data.dto.response.SignInResDto;
 import me.capstone.javis.user.data.dto.response.SignUpResDto;
+import me.capstone.javis.user.data.dto.response.userhomePage.TeamAndTeamTodosResDto;
 import me.capstone.javis.user.data.repository.UserRepository;
 import me.capstone.javis.common.exception.customs.CustomException;
 import me.capstone.javis.common.exception.customs.ExceptionCode;
@@ -23,6 +24,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
@@ -35,7 +37,6 @@ public class UserService {
         return SignUpResDto.toDto(user);
     }
 
-    @Transactional
     public SignUpResDto signUp(SignUpReqDto userReqDto) {
 
         User user = User.builder()
@@ -66,7 +67,6 @@ public class UserService {
         return signInResponseDto;
     }
 
-    @Transactional
     public void deleteUser(String loginId) {
         User user = userRepository.findByLoginId(loginId).orElseThrow(() -> new CustomException(ExceptionCode.USER_NOT_FOUND));
         userRepository.deleteById(user.getId());
@@ -86,5 +86,13 @@ public class UserService {
         List<CategoryAndAllTodoResDto> categoryAndAllTodoResDtoList = userRepository.findCategoryAndAllTodosByLoginId(loginId);
 
         return categoryAndAllTodoResDtoList;
+    }
+
+    @Transactional(readOnly = true)
+    public List<TeamAndTeamTodosResDto> getTeamAndAllTeamTodos(String loginId){
+
+        List<TeamAndTeamTodosResDto> teamAndTeamTodosResDtoList = userRepository.findTeamAndTeamTodosByLoginId(loginId);
+
+        return teamAndTeamTodosResDtoList;
     }
 }
