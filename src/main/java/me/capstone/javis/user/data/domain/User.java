@@ -56,6 +56,12 @@ public class User extends BaseTimeEntity implements UserDetails{
         this.roles = roles;
     }
 
+    public void updateUserName(String name) { this.name = name;}
+    public void updateUserLoginId(String loginId) { this.loginId = loginId;}
+    public void updateUserEmail(String email) { this.email = email;}
+    public void updateUserPassword(String password){this.password = password;}
+
+
     //UserDetails 인터페이스를 구현한 클래스에서 사용자의 권한을 반환하는 메서드
     //Spring Security에서 사용자의 권한은 GrantedAuthority 객체의 컬렉션으로 표현
     //GrantedAuthority는 사용자가 가지고 있는 권한을 나타내는 인터페이스이며, 대표적으로 SimpleGrantedAuthority 클래스가 이를 구현

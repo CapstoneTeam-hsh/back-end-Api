@@ -6,6 +6,8 @@ import me.capstone.javis.common.jwt.JwtProvider;
 import me.capstone.javis.user.data.domain.User;
 import me.capstone.javis.user.data.dto.request.SignInReqDto;
 import me.capstone.javis.user.data.dto.request.SignUpReqDto;
+import me.capstone.javis.user.data.dto.request.UserUpdateDto;
+import me.capstone.javis.user.data.dto.response.UserResDto;
 import me.capstone.javis.user.data.dto.response.calendar.CategoryAndAllTodoResDto;
 import me.capstone.javis.user.data.dto.response.userhomePage.CategoryAndTodosResDto;
 import me.capstone.javis.user.data.dto.response.SignInResDto;
@@ -65,6 +67,25 @@ public class UserService {
                 .build();
 
         return signInResponseDto;
+    }
+
+    public UserResDto updateUser(String loginId, UserUpdateDto userUpdateDto) {
+
+        User user = userRepository.findByLoginId(loginId).orElseThrow(() -> new CustomException(ExceptionCode.USER_NOT_FOUND));
+
+        if (userUpdateDto.name() != null && !userUpdateDto.name().isEmpty()) {
+            user.updateUserName(userUpdateDto.name());
+        }
+
+        if (userUpdateDto.loginId() != null && !userUpdateDto.loginId().isEmpty()) {
+            user.updateUserLoginId(userUpdateDto.loginId());
+        }
+
+        if (userUpdateDto.email() != null && !userUpdateDto.email().isEmpty()) {
+            user.updateUserEmail(userUpdateDto.email());
+        }
+
+        return UserResDto.toDto(user);
     }
 
     public void deleteUser(String loginId) {

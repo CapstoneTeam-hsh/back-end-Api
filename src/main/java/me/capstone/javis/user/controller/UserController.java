@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import me.capstone.javis.common.dto.CommonResponseDto;
 import me.capstone.javis.user.data.dto.request.SignInReqDto;
 import me.capstone.javis.user.data.dto.request.SignUpReqDto;
+import me.capstone.javis.user.data.dto.request.UserUpdateDto;
+import me.capstone.javis.user.data.dto.response.UserResDto;
 import me.capstone.javis.user.data.dto.response.calendar.CategoryAndAllTodoResDto;
 import me.capstone.javis.user.data.dto.response.userhomePage.CategoryAndTodosResDto;
 import me.capstone.javis.user.data.dto.response.SignInResDto;
@@ -125,6 +127,19 @@ public class UserController {
                 new CommonResponseDto<>(
                         "유저의 그룹들과 그룹 투두 들을 성공적으로 조회 완료하였습니다.",
                         teamAndTeamTodosResDtoList));
+    }
+
+    @Operation(summary = "유저 정보 수정", description = "유저의 정보를 수정합니다.")
+    @PutMapping()
+    public ResponseEntity<CommonResponseDto<UserResDto>> updateUser(@RequestBody UserUpdateDto userUpdateDto)
+    {
+        String loginId = getLoginId();
+        UserResDto userResDto = userService.updateUser(loginId, userUpdateDto);
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new CommonResponseDto<>(
+                        "유저의 정보 수정을 성공적으로 완료하였습니다.",
+                        userResDto));
     }
 
 
