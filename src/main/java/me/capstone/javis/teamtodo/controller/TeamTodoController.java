@@ -23,19 +23,35 @@ import java.util.List;
 @RequestMapping("/teamTodo")
 public class TeamTodoController {
 
-    private final TeamTodoService todoService;
+    private final TeamTodoService teamTodoService;
 
-    @Operation(summary = "그룹 투두 전체 조회", description = "그룹 id로 해당 그룹의 투두들을 조회합니다.")
-    @Parameter(name="teamId", description = "그룹 id를 입력해주세요")
-    @GetMapping("/{teamId}")
-    public ResponseEntity<CommonResponseDto<List<TeamTodoResDto>>> getAllTeamTodo(@PathVariable("teamId") Long teamId){
-        log.info("[getTodo] 그룹 id로 해당 그룹의 투두들을 조회합니다. teamId : {}", teamId);
 
-        List<TeamTodoResDto> teamTodoResDtoList = todoService.getAllTeamTodo(teamId);
+    @Operation(summary = "그룹 투두 단건 조회", description = "그룹 투두 id 로 그룹 투두를 단건 조회합니다.")
+    @Parameter(name = "teamTodoId", description = "조회 할 그룹 투두 id")
+    @GetMapping("/{teamTodoId}")
+    public ResponseEntity<CommonResponseDto<TeamTodoResDto>> getOneTeamTodo(@PathVariable("teamTodoId") Long teamTodoId){
+        log.info("[getOneTeamTodo] 그룹 투두 id로 그룹 투두를 조회합니다.");
+
+        TeamTodoResDto teamTodoResDto = teamTodoService.getOneTeamTodo(teamTodoId);
 
         return ResponseEntity.status(HttpStatus.OK).body(
                 new CommonResponseDto<>(
-                        "그룹 투두가 성공적으로 조회되었습니다.",
+                        "그룹 투두를 성공적으로 단건 조회하였습니다.",
+                        teamTodoResDto));
+    }
+
+
+    @Operation(summary = "그룹 투두 전체 조회", description = "그룹 id로 해당 그룹의 투두들을 조회합니다.")
+    @Parameter(name="teamId", description = "그룹 id를 입력해주세요")
+    @GetMapping("/team/{teamId}")
+    public ResponseEntity<CommonResponseDto<List<TeamTodoResDto>>> getAllTeamTodo(@PathVariable("teamId") Long teamId){
+        log.info("[getTodo] 그룹 id로 해당 그룹의 투두들을 조회합니다. teamId : {}", teamId);
+
+        List<TeamTodoResDto> teamTodoResDtoList = teamTodoService.getAllTeamTodo(teamId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new CommonResponseDto<>(
+                        "그룹 투두들을 성공적으로 조회되었습니다.",
                         teamTodoResDtoList));
     }
 
@@ -44,7 +60,7 @@ public class TeamTodoController {
     public ResponseEntity<CommonResponseDto<TeamTodoResDto>> createTeamTodo(@RequestBody TeamTodoReqDto teamTodoReqDto){
         log.info("[createTeamTodo] 그룹 id로 해당 그룹의 투두를 생성합니다.. teamId : {}",teamTodoReqDto.teamId());
 
-        TeamTodoResDto teamTodoResDto = todoService.createTeamTodo(teamTodoReqDto);
+        TeamTodoResDto teamTodoResDto = teamTodoService.createTeamTodo(teamTodoReqDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(
                 new CommonResponseDto<>(
@@ -58,7 +74,7 @@ public class TeamTodoController {
     public ResponseEntity<CommonResponseDto<Void>> deleteTeamTodo(@PathVariable("teamTodoId") Long teamTodoId){
         log.info("[deleteTeamTodo] 그룹 투두 id로 그룹 투두를 삭제합니다. teamTodoId : {}",teamTodoId);
 
-        todoService.deleteTeamTodo(teamTodoId);
+        teamTodoService.deleteTeamTodo(teamTodoId);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new CommonResponseDto<>(
                         "그룹 투두가 성공적으로 삭제되었습니다..",

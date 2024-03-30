@@ -22,7 +22,9 @@ public enum ExceptionCode {
     // Team Exception
     TEAM_NOT_FOUND(HttpStatus.BAD_REQUEST,"그룹을 찾을 수 없습니다."),
     // UserTeam Exception
-    USERTEAM_NOT_FOUND(HttpStatus.BAD_REQUEST,"해당 그룹에 가입 된 유저가 존재하지 않습니다.");
+    USERTEAM_NOT_FOUND(HttpStatus.BAD_REQUEST,"해당 그룹에 가입 된 유저가 존재하지 않습니다."),
+    // TEAMTODO Exception
+    TEAMTODO_NOT_FOUND(HttpStatus.BAD_REQUEST,"그룹 투두를 찾을 수 없습니다.");
 
     private final HttpStatus status;
     private final String message;

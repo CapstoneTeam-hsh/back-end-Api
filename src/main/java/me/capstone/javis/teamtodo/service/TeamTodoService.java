@@ -25,6 +25,15 @@ public class TeamTodoService {
     private final TeamRepository teamRepository;
     private final LocationRepository locationRepository;
 
+
+
+    public TeamTodoResDto getOneTeamTodo(Long teamTodoId){
+        TeamTodo teamTodo = teamTodoRepository.findById(teamTodoId).orElseThrow(()->new CustomException(ExceptionCode.TEAMTODO_NOT_FOUND));
+
+        return TeamTodoResDto.toDto(teamTodo);
+    }
+
+
     public TeamTodoResDto createTeamTodo(TeamTodoReqDto todoReqDto){
         Team team = teamRepository.findById(todoReqDto.teamId()).orElseThrow(()->new CustomException(ExceptionCode.TEAM_NOT_FOUND));
         Location location = locationRepository.findById(todoReqDto.locationId()).orElseThrow(() -> new CustomException(ExceptionCode.LOCATION_NOT_FOUND));
