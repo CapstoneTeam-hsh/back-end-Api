@@ -24,5 +24,20 @@ public record TodoUpdateReqDto(
                 example = "2024-10-29",
                 description = "마감 기한을 작성해주세요."
         )
-        String deadLine
+        String deadLine,
+        @Schema(
+                example = "해당 좌표 이름",
+                description = "좌표 위치 이름을 입력해주세요."
+        )
+        String name,
+        @Schema(
+                example = "좌표의 위도",
+                description = "좌표의 위도를 입력해주세요."
+        )
+        double latitude,
+        @Schema(
+                example = "좌표의 경도",
+                description = "좌표의 경도를 입력해주세요."
+        )
+        double longitude
 ){}

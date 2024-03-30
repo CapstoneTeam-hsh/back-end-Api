@@ -157,6 +157,20 @@ public class UserController {
                         null));
     }
 
+    @Operation(summary = "유저 비밀번호 수정 전 현재 비밀번호 체크",description = "해당 유저의 비밀번호를 체크하여 비밀번호 수정 가능 여부를 판단합니다.")
+    @Parameter(name = "password", description = "체크 할 비밀번호를 입력해주세요.")
+    @PutMapping("/checkPassword")
+    public ResponseEntity<CommonResponseDto<Boolean>> checkPassword(@RequestParam("password") String password){
+        String loginId = getLoginId(); // 로그인한 사용자의 아이디
+
+        Boolean check = userService.checkPassword(loginId, password);
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new CommonResponseDto<>(
+                        "비밀번호 체크 성공 여부 응답",
+                        check));
+    }
+
 
 
     //현재 인증된 사용자의 loginId를 가져옵니다.

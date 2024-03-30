@@ -97,4 +97,10 @@ public class LocationService {
         return LocationResDto.toDto(updateLocation);
     }
 
+    public void deleteLocation(Long locationId)
+    {
+        Location location = locationRepository.findById(locationId).orElseThrow(()->new CustomException(ExceptionCode.LOCATION_NOT_FOUND));
+        locationRepository.deleteById(locationId);
+    }
+
 }

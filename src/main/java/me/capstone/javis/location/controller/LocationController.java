@@ -57,6 +57,20 @@ public class LocationController {
                         locationResDto));
     }
 
+    @Operation(summary = "좌표 삭제", description = "좌표를 삭제합니다.")
+    @Parameter(name = "locationId", description = "좌표 id로 좌표를 삭제합니다.")
+    @DeleteMapping("/{locationId}")
+    public ResponseEntity<CommonResponseDto<Void>> deleteLocation(@PathVariable("locationId") Long locationId){
+        log.info("[deleteLocation] 좌표를 삭제합니다.");
+
+        locationService.deleteLocation(locationId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new CommonResponseDto<>(
+                        "좌표 삭제를 성공적으로 완료하였습니다.",
+                        null));
+    }
+
     @Operation(summary = "좌표 계산 테스트", description = "좌표값을 입력하여 좌표 계산을 테스트 합니다.")
     @Parameters({
             @Parameter(name = "latitude", description = "위도"),

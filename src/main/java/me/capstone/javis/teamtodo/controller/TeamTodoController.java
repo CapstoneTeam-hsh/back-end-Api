@@ -53,7 +53,8 @@ public class TeamTodoController {
     }
 
     @Operation(summary = "그룹 투두 삭제",description = "그룹 투두 id로 그룹 투두를 삭제합니다.")
-    @DeleteMapping()
+    @Parameter(name = "teamTodoId", description = "삭제를 할 그룹 투두 id")
+    @DeleteMapping("/{teamTodoId}")
     public ResponseEntity<CommonResponseDto<Void>> deleteTeamTodo(@PathVariable("teamTodoId") Long teamTodoId){
         log.info("[deleteTeamTodo] 그룹 투두 id로 그룹 투두를 삭제합니다. teamTodoId : {}",teamTodoId);
 

@@ -27,10 +27,10 @@ public class Location {
     @Column(nullable = false)
     private double longitude;
 
-    @OneToOne(mappedBy = "location")
+    @OneToOne(mappedBy = "location",cascade = CascadeType.ALL)
     private Todo todo;
 
-    @OneToOne(mappedBy = "location")
+    @OneToOne(mappedBy = "location",cascade = CascadeType.ALL)
     private TeamTodo teamTodo;
 
     @Builder
