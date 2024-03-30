@@ -2,6 +2,7 @@ package me.capstone.javis.category.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,23 @@ import java.util.List;
 public class CategoryController {
 
     private final CategoryService categoryService;
+
+    @Operation(summary = "카테고리 단건 조회", description = "카테고리 id로 카테고리 하나 단건 조회")
+    @Parameter(name = "categoryId", description = "조회 할 카테고리 id")
+    @GetMapping("/{categoryId}")
+    public ResponseEntity<CommonResponseDto<CategoryResDto>> getCategory(@PathVariable("categoryId") Long categoryId){
+        log.info("[getCategory] id에 해당하는 카테고리를 조회합니다.");
+
+        CategoryResDto categoryResDto = categoryService.getOneCategory(categoryId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new CommonResponseDto<>(
+                        "카테고리 단건 조회를 성공적으로 완료되었습니다.",
+                        categoryResDto));
+
+    }
+
+
 
     @Operation(summary = "투두에 해당하는 카테고리 추가",description = "해당 투두의 카테고리를 셍성합니다.<br>카테고리 추가 화면")
     @PostMapping()
@@ -65,6 +83,22 @@ public class CategoryController {
                         "카테고리 삭제를 성공적으로 완료하였습니다.",
                         null));
 
+    }
+
+    @Operation(summary = "카테고리 이름 수정", description = "카테고리 이름을 수정합니다.")
+    @Parameters({
+            @Parameter(name = "categoryId", description = "수정할 카테고리 id"),
+            @Parameter(name = "categoryName", description = "수정할 카테고리 name")
+    })
+    @PutMapping()
+    public ResponseEntity<CommonResponseDto<CategoryResDto>> updateCategoryName(@RequestParam("categoryId")Long categoryId, @RequestParam("categoryName")String categoryName){
+
+        CategoryResDto categoryResDto = categoryService.updateCategoryName(categoryId,categoryName);
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new CommonResponseDto<>(
+                        "카테고리 이름 수정을 성공적으로 완료하였습니다.",
+                        categoryResDto));
     }
 
     public String getLoginId(){

@@ -34,6 +34,12 @@ public class LocationService {
     private static double setDistance = 50.0;
 
 
+    public LocationResDto getOneLocation(Long locationId){
+        Location location = locationRepository.findById(locationId).orElseThrow(() -> new CustomException(ExceptionCode.LOCATION_NOT_FOUND));
+
+        return LocationResDto.toDto(location);
+    }
+
     public LocationResDto settingLocation(LocationReqDto locationReqDto){
         Location location = Location.builder()
                 .name(locationReqDto.name())
@@ -68,6 +74,27 @@ public class LocationService {
         User user = userRepository.findByLoginId(loginId).orElseThrow(()-> new CustomException(ExceptionCode.USER_NOT_FOUND));
         List<TodoSimpleInfoResDto> todoSimpleList = todoRepository.findTodoListByUser(user);
         return todoSimpleList;
+    }
+
+    public LocationResDto updateLocation(Long locationId, LocationReqDto locationReqDto){
+        Location updateLocation = locationRepository.findById(locationId).orElseThrow(()->new CustomException(ExceptionCode.LOCATION_NOT_FOUND));
+
+        if (locationReqDto.name() != null && !locationReqDto.name().isEmpty())
+        {
+            updateLocation.updateName(locationReqDto.name());
+        }
+
+        if (!Double.isNaN(locationReqDto.latitude()))
+        {
+            updateLocation.updateLatitude(locationReqDto.latitude());
+        }
+
+        if (!Double.isNaN(locationReqDto.longitude()))
+        {
+            updateLocation.updateLongitude(locationReqDto.longitude());
+        }
+
+        return LocationResDto.toDto(updateLocation);
     }
 
 }

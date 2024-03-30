@@ -1,6 +1,7 @@
 package me.capstone.javis.user.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -141,6 +142,21 @@ public class UserController {
                         "유저의 정보 수정을 성공적으로 완료하였습니다.",
                         userResDto));
     }
+
+    @Operation(summary = "유저 비밀번호 수정",description = "해당 유저의 비밀번호를 수정합니다.")
+    @Parameter(name = "password", description = "수정할 비밀번호를 입력해주세요.")
+    @PutMapping("/updatePassword")
+    public ResponseEntity<CommonResponseDto<Void>> changePassword(@RequestParam("password") String password){
+        String loginId = getLoginId(); // 로그인한 사용자의 아이디
+
+        userService.updatePassword(loginId, password);
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new CommonResponseDto<>(
+                        "유저 비밀번호 수정이 성공적으로 완료되었습니다.",
+                        null));
+    }
+
 
 
     //현재 인증된 사용자의 loginId를 가져옵니다.

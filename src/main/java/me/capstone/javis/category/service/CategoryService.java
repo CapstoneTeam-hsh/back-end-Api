@@ -24,6 +24,14 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
 
+
+    public CategoryResDto getOneCategory(Long categoryId)
+    {
+        Category category = categoryRepository.findById(categoryId).orElseThrow(()->new CustomException(ExceptionCode.CATEGORY_NOT_FOUND));
+
+        return CategoryResDto.toDto(category);
+    }
+
     public CategoryResDto makeCategory(String loginId, String name){
         if(name == null)
         {
@@ -51,6 +59,16 @@ public class CategoryService {
         List<String> categoryNameList = categoryRepository.findCategoryName(loginId);
 
         return categoryNameList;
+    }
+
+    public CategoryResDto updateCategoryName(Long categoryId, String name){
+        Category updateCategory = categoryRepository.findById(categoryId).orElseThrow(()-> new CustomException(ExceptionCode.CATEGORY_NOT_FOUND));
+
+        if(name != null && !name.isEmpty()){
+            updateCategory.updateName(name);
+        }
+
+        return CategoryResDto.toDto(updateCategory);
     }
 
     public void deleteCategory(String categoryName)

@@ -32,6 +32,18 @@ public class LocationController {
 
     private final LocationService locationService;
 
+    @Operation(summary = "좌표 단건 조회", description = "좌표 id로 좌표를 단건 조회합니다.")
+    @GetMapping("/{locationId}")
+    public ResponseEntity<CommonResponseDto<LocationResDto>> getOneLocation(@PathVariable("locationId") Long locationId){
+        log.info("[getOneLocation] 좌표 id로 좌표를 단건조회합니다.");
+        LocationResDto locationResDto = locationService.getOneLocation(locationId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new CommonResponseDto<>(
+                        "좌표 조회를 성공적으로 완료하였습니다.",
+                        locationResDto));
+    }
+
     @Operation(summary = "좌표 생성", description = "좌표를 생성합니다.")
     @PostMapping()
     public ResponseEntity<CommonResponseDto<LocationResDto>> createLocation(@RequestBody LocationReqDto locationReqDto)
@@ -64,6 +76,19 @@ public class LocationController {
                 new CommonResponseDto<>(
                         "현재 좌표에 해당하는 할 일들을 성공적으로 조회하였습니다.",
                         todoSimpleInfoResDtoList));
+    }
+    @Operation(summary = "좌표 수정", description = "좌표를 수정합니다.")
+    @Parameter(name = "locationId", description = "수정할 좌표의 id")
+    @PutMapping("/{locationId}")
+    public ResponseEntity<CommonResponseDto<LocationResDto>> updateLocation(@PathVariable("locationId") Long locationId, @RequestBody LocationReqDto locationReqDto){
+        log.info("[updateLocation] 좌표를 수정합니다.");
+
+        LocationResDto locationResDto = locationService.updateLocation(locationId,locationReqDto);
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new CommonResponseDto<>(
+                        "좌표 수정을 성공적으로 완료하였습니다.",
+                        locationResDto));
     }
 
     @Operation(summary = "User-Todo-Get메서드 테스트", description = "유저의 Todo들을 잘 조회하는지 테스트")

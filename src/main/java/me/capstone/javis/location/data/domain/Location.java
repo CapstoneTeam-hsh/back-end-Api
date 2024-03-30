@@ -40,4 +40,19 @@ public class Location {
         this.latitude = latitude;
         this.longitude = longitude;
     }
+
+    public void updateName(String name)
+    {
+        this.name = name;
+    }
+
+    public void updateLatitude(double latitude)
+    {
+        this.latitude = latitude;
+    }
+
+    public void updateLongitude(double longitude)
+    {
+        this.longitude = longitude;
+    }
 }

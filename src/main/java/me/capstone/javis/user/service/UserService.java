@@ -88,6 +88,12 @@ public class UserService {
         return UserResDto.toDto(user);
     }
 
+    public void updatePassword(String loginId, String password){
+        User user = userRepository.findByLoginId(loginId).orElseThrow(()-> new CustomException(ExceptionCode.USER_NOT_FOUND));
+
+            user.updateUserPassword(passwordEncoder.encode(password));
+    }
+
     public void deleteUser(String loginId) {
         User user = userRepository.findByLoginId(loginId).orElseThrow(() -> new CustomException(ExceptionCode.USER_NOT_FOUND));
         userRepository.deleteById(user.getId());

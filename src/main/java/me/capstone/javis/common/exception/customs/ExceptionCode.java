@@ -11,6 +11,7 @@ public enum ExceptionCode {
     // User Exception
     USER_NOT_EXIST(HttpStatus.BAD_REQUEST, "사용자가 존재하지 않습니다."),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND,"사용자를 찾을 수 없습니다."),
+    PASSWORD_DUPLICATE(HttpStatus.BAD_REQUEST,"이전 비밀번호와 같은 내용으로 비밀번호를 수정 할 수 없습니다."),
     // _Todo Exception
     TODO_NOT_FOUND(HttpStatus.NOT_FOUND,"투두를 찾을 수 없습니다."),
     // Category Exception

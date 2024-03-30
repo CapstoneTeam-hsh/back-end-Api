@@ -1,0 +1,68 @@
+[2024-03-30 15:14:54.589] [INFO ] [background-preinit] org.hibernate.validator.internal.util.Version HV000001: Hibernate Validator 8.0.1.Final
+[2024-03-30 15:14:54.621] [INFO ] [restartedMain] me.capstone.javis.JavisApplication Starting JavisApplication using Java 17.0.6 with PID 10856 (C:\CapstoneProject\Javis-Api\javis\out\production\classes started by kanghj in C:\CapstoneProject\Javis-Api\javis)
+[2024-03-30 15:14:54.621] [INFO ] [restartedMain] me.capstone.javis.JavisApplication No active profile set, falling back to 1 default profile: "default"
+[2024-03-30 15:14:54.660] [INFO ] [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+[2024-03-30 15:14:54.668] [INFO ] [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+[2024-03-30 15:14:55.487] [INFO ] [restartedMain] org.springframework.data.repository.config.RepositoryConfigurationDelegate Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[2024-03-30 15:14:55.560] [INFO ] [restartedMain] org.springframework.data.repository.config.RepositoryConfigurationDelegate Finished Spring Data repository scanning in 68 ms. Found 7 JPA repository interfaces.
+[2024-03-30 15:14:55.985] [INFO ] [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer Tomcat initialized with port(s): 8080 (http)
+[2024-03-30 15:14:55.991] [INFO ] [restartedMain] org.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+[2024-03-30 15:14:55.992] [INFO ] [restartedMain] org.apache.catalina.core.StandardService Starting service [Tomcat]
+[2024-03-30 15:14:55.992] [INFO ] [restartedMain] org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/10.1.18]
+[2024-03-30 15:14:56.045] [INFO ] [restartedMain] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+[2024-03-30 15:14:56.045] [INFO ] [restartedMain] org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext Root WebApplicationContext: initialization completed in 1377 ms
+[2024-03-30 15:14:56.191] [INFO ] [restartedMain] org.hibernate.jpa.internal.util.LogHelper HHH000204: Processing PersistenceUnitInfo [name: default]
+[2024-03-30 15:14:56.225] [INFO ] [restartedMain] org.hibernate.Version HHH000412: Hibernate ORM core version 6.2.20.Final
+[2024-03-30 15:14:56.227] [INFO ] [restartedMain] org.hibernate.cfg.Environment HHH000406: Using bytecode reflection optimizer
+[2024-03-30 15:14:56.414] [INFO ] [restartedMain] org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo No LoadTimeWeaver setup: ignoring JPA class transformer
+[2024-03-30 15:14:56.432] [INFO ] [restartedMain] com.zaxxer.hikari.HikariDataSource HikariPool-1 - Starting...
+[2024-03-30 15:14:56.532] [INFO ] [restartedMain] com.zaxxer.hikari.pool.HikariPool HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@292db117
+[2024-03-30 15:14:56.533] [INFO ] [restartedMain] com.zaxxer.hikari.HikariDataSource HikariPool-1 - Start completed.
+[2024-03-30 15:14:56.548] [WARN ] [restartedMain] org.hibernate.orm.deprecation HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[2024-03-30 15:14:56.549] [WARN ] [restartedMain] org.hibernate.orm.deprecation HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+[2024-03-30 15:14:57.271] [INFO ] [restartedMain] org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+[2024-03-30 15:14:57.544] [INFO ] [restartedMain] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean Initialized JPA EntityManagerFactory for persistence unit 'default'
+[2024-03-30 15:14:57.710] [WARN ] [restartedMain] org.springframework.core.LocalVariableTableParameterNameDiscoverer Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: me.capstone.javis.category.data.repository.CategoryRepository
+[2024-03-30 15:14:57.780] [WARN ] [restartedMain] org.springframework.core.LocalVariableTableParameterNameDiscoverer Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: me.capstone.javis.user.data.repository.UserRepository
+[2024-03-30 15:14:57.793] [INFO ] [restartedMain] me.capstone.javis.common.jwt.JwtProvider [init] JwtTokenProvide 내 secretKey 초기화 시작
+[2024-03-30 15:14:57.802] [INFO ] [restartedMain] me.capstone.javis.common.jwt.JwtProvider [init] JwtTokenProvider 내 secretKey 초기화 완료
+[2024-03-30 15:14:57.917] [WARN ] [restartedMain] org.springframework.core.LocalVariableTableParameterNameDiscoverer Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: me.capstone.javis.userteam.repository.UserTeamRepository
+[2024-03-30 15:14:58.239] [INFO ] [restartedMain] org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver Exposing 1 endpoint(s) beneath base path '/actuator'
+[2024-03-30 15:14:58.264] [INFO ] [restartedMain] org.springframework.security.web.DefaultSecurityFilterChain Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@6219980c, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3bcdfea2, org.springframework.security.web.context.SecurityContextHolderFilter@37e7aae8, org.springframework.security.web.header.HeaderWriterFilter@1fb98eec, org.springframework.security.web.authentication.logout.LogoutFilter@3f83a7be, me.capstone.javis.common.jwt.JwtAuthenticationFilter@223b7199, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1c8de891, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@30d64199, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3389f9b9, org.springframework.security.web.session.SessionManagementFilter@17eac3b3, org.springframework.security.web.access.ExceptionTranslationFilter@456d8a72, org.springframework.security.web.access.intercept.AuthorizationFilter@5431a79a]
+[2024-03-30 15:14:58.509] [INFO ] [restartedMain] org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer LiveReload server is running on port 35729
+[2024-03-30 15:14:58.543] [INFO ] [restartedMain] org.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+[2024-03-30 15:14:58.558] [INFO ] [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer Tomcat started on port(s): 8080 (http) with context path ''
+[2024-03-30 15:14:58.569] [INFO ] [restartedMain] me.capstone.javis.JavisApplication Started JavisApplication in 4.287 seconds (process running for 4.795)
+[2024-03-30 15:14:58.990] [INFO ] [RMI TCP Connection(1)-192.168.123.9] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] Initializing Spring DispatcherServlet 'dispatcherServlet'
+[2024-03-30 15:14:58.990] [INFO ] [RMI TCP Connection(1)-192.168.123.9] org.springframework.web.servlet.DispatcherServlet Initializing Servlet 'dispatcherServlet'
+[2024-03-30 15:14:58.991] [INFO ] [RMI TCP Connection(1)-192.168.123.9] org.springframework.web.servlet.DispatcherServlet Completed initialization in 1 ms
+[2024-03-30 15:15:24.341] [INFO ] [http-nio-8080-exec-1] me.capstone.javis.common.jwt.JwtProvider [resolveToken] HTTP 헤더에서 Token 값 추출
+[2024-03-30 15:15:24.342] [INFO ] [http-nio-8080-exec-1] me.capstone.javis.common.jwt.JwtAuthenticationFilter [doFilterInternal] 요청 URL http://localhost:8080/swagger-ui/index.html
+[2024-03-30 15:15:24.342] [INFO ] [http-nio-8080-exec-1] me.capstone.javis.common.jwt.JwtAuthenticationFilter [doFilterInternal] token 값 유효성 체크 시작
+[2024-03-30 15:15:24.404] [INFO ] [http-nio-8080-exec-2] me.capstone.javis.common.jwt.JwtProvider [resolveToken] HTTP 헤더에서 Token 값 추출
+[2024-03-30 15:15:24.405] [INFO ] [http-nio-8080-exec-2] me.capstone.javis.common.jwt.JwtAuthenticationFilter [doFilterInternal] 요청 URL http://localhost:8080/swagger-ui/swagger-initializer.js
+[2024-03-30 15:15:24.405] [INFO ] [http-nio-8080-exec-2] me.capstone.javis.common.jwt.JwtAuthenticationFilter [doFilterInternal] token 값 유효성 체크 시작
+[2024-03-30 15:15:24.502] [INFO ] [http-nio-8080-exec-4] me.capstone.javis.common.jwt.JwtProvider [resolveToken] HTTP 헤더에서 Token 값 추출
+[2024-03-30 15:15:24.503] [INFO ] [http-nio-8080-exec-4] me.capstone.javis.common.jwt.JwtAuthenticationFilter [doFilterInternal] 요청 URL http://localhost:8080/v3/api-docs/swagger-config
+[2024-03-30 15:15:24.503] [INFO ] [http-nio-8080-exec-4] me.capstone.javis.common.jwt.JwtAuthenticationFilter [doFilterInternal] token 값 유효성 체크 시작
+[2024-03-30 15:15:24.503] [INFO ] [http-nio-8080-exec-9] me.capstone.javis.common.jwt.JwtProvider [resolveToken] HTTP 헤더에서 Token 값 추출
+[2024-03-30 15:15:24.503] [INFO ] [http-nio-8080-exec-9] me.capstone.javis.common.jwt.JwtAuthenticationFilter [doFilterInternal] 요청 URL http://localhost:8080/swagger-ui/favicon-32x32.png
+[2024-03-30 15:15:24.503] [INFO ] [http-nio-8080-exec-9] me.capstone.javis.common.jwt.JwtAuthenticationFilter [doFilterInternal] token 값 유효성 체크 시작
+[2024-03-30 15:15:24.526] [INFO ] [http-nio-8080-exec-3] me.capstone.javis.common.jwt.JwtProvider [resolveToken] HTTP 헤더에서 Token 값 추출
+[2024-03-30 15:15:24.526] [INFO ] [http-nio-8080-exec-3] me.capstone.javis.common.jwt.JwtAuthenticationFilter [doFilterInternal] 요청 URL http://localhost:8080/v3/api-docs
+[2024-03-30 15:15:24.526] [INFO ] [http-nio-8080-exec-3] me.capstone.javis.common.jwt.JwtAuthenticationFilter [doFilterInternal] token 값 유효성 체크 시작
+[2024-03-30 15:15:24.689] [WARN ] [http-nio-8080-exec-3] org.springframework.core.LocalVariableTableParameterNameDiscoverer Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: me.capstone.javis.user.controller.UserController
+[2024-03-30 15:15:24.746] [WARN ] [http-nio-8080-exec-3] org.springframework.core.LocalVariableTableParameterNameDiscoverer Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: me.capstone.javis.todo.controller.TodoController
+[2024-03-30 15:15:24.765] [WARN ] [http-nio-8080-exec-3] org.springframework.core.LocalVariableTableParameterNameDiscoverer Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: me.capstone.javis.location.controller.LocationController
+[2024-03-30 15:15:24.775] [WARN ] [http-nio-8080-exec-3] org.springframework.core.LocalVariableTableParameterNameDiscoverer Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: me.capstone.javis.category.controller.CategoryController
+[2024-03-30 15:15:24.799] [WARN ] [http-nio-8080-exec-3] org.springframework.core.LocalVariableTableParameterNameDiscoverer Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: me.capstone.javis.team.controller.TeamController
+[2024-03-30 15:15:24.811] [WARN ] [http-nio-8080-exec-3] org.springframework.core.LocalVariableTableParameterNameDiscoverer Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: me.capstone.javis.teamtodo.controller.TeamTodoController
+[2024-03-30 15:15:24.881] [INFO ] [http-nio-8080-exec-3] org.springdoc.api.AbstractOpenApiResource Init duration for springdoc-openapi is: 348 ms
+[2024-03-30 15:15:29.315] [INFO ] [http-nio-8080-exec-6] me.capstone.javis.common.jwt.JwtProvider [resolveToken] HTTP 헤더에서 Token 값 추출
+[2024-03-30 15:15:29.315] [INFO ] [http-nio-8080-exec-6] me.capstone.javis.common.jwt.JwtAuthenticationFilter [doFilterInternal] 요청 URL http://localhost:8080/users/sign-in
+[2024-03-30 15:15:29.315] [INFO ] [http-nio-8080-exec-6] me.capstone.javis.common.jwt.JwtAuthenticationFilter [doFilterInternal] token 값 유효성 체크 시작
+[2024-03-30 15:15:29.543] [INFO ] [http-nio-8080-exec-6] me.capstone.javis.common.jwt.JwtProvider [createToken] 토큰 생성 시작
+[2024-03-30 15:15:29.561] [INFO ] [http-nio-8080-exec-6] me.capstone.javis.common.jwt.JwtProvider [createToken] 토큰 생성 완료
+[2024-03-30 15:17:35.937] [INFO ] [SpringApplicationShutdownHook] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean Closing JPA EntityManagerFactory for persistence unit 'default'
+[2024-03-30 15:17:35.939] [INFO ] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource HikariPool-1 - Shutdown initiated...
+[2024-03-30 15:17:35.944] [INFO ] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource HikariPool-1 - Shutdown completed.
