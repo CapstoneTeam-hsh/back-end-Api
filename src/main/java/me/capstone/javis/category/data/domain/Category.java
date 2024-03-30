@@ -7,7 +7,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.capstone.javis.common.domain.BaseTimeEntity;
+import me.capstone.javis.todo.data.domain.Todo;
 import me.capstone.javis.user.data.domain.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -25,6 +29,9 @@ public class Category extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id",nullable = false)
     private User user;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    private List<Todo> todos = new ArrayList<>();
 
     @Builder
     public Category(String name,User user){

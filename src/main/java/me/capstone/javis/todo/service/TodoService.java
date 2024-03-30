@@ -30,7 +30,7 @@ public class TodoService {
 
     @Transactional(readOnly = true)
     public TodoResDto getTodo(Long todoId){
-        Todo todo = todoRepository.findById(todoId).orElseThrow(()->new CustomException(ExceptionCode.USER_NOT_FOUND));
+        Todo todo = todoRepository.findById(todoId).orElseThrow(()->new CustomException(ExceptionCode.TODO_NOT_FOUND));
         return TodoResDto.toDto(todo);
     }
 

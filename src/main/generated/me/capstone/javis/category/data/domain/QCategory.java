@@ -34,6 +34,8 @@ public class QCategory extends EntityPathBase<Category> {
 
     public final StringPath name = createString("name");
 
+    public final ListPath<me.capstone.javis.todo.data.domain.Todo, me.capstone.javis.todo.data.domain.QTodo> todos = this.<me.capstone.javis.todo.data.domain.Todo, me.capstone.javis.todo.data.domain.QTodo>createList("todos", me.capstone.javis.todo.data.domain.Todo.class, me.capstone.javis.todo.data.domain.QTodo.class, PathInits.DIRECT2);
+
     public final me.capstone.javis.user.data.domain.QUser user;
 
     public QCategory(String variable) {
