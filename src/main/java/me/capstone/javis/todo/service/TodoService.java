@@ -69,5 +69,4 @@ public class TodoService {
         todoRepository.deleteById(todoId);
     }
 
-
 }

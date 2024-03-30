@@ -9,8 +9,12 @@ import me.capstone.javis.team.data.domain.Team;
 import me.capstone.javis.team.data.repository.TeamRepository;
 import me.capstone.javis.teamtodo.data.domain.TeamTodo;
 import me.capstone.javis.teamtodo.data.dto.request.TeamTodoReqDto;
+import me.capstone.javis.teamtodo.data.dto.request.TeamTodoUpdateDto;
 import me.capstone.javis.teamtodo.data.dto.response.TeamTodoResDto;
 import me.capstone.javis.teamtodo.data.repository.TeamTodoRepository;
+import me.capstone.javis.todo.data.domain.Todo;
+import me.capstone.javis.todo.data.dto.request.TodoUpdateReqDto;
+import me.capstone.javis.todo.data.dto.response.TodoResDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +45,29 @@ public class TeamTodoService {
         TeamTodo teamTodo = TeamTodoReqDto.toEntity(todoReqDto,team,location);
 
         return TeamTodoResDto.toDto(teamTodoRepository.save(teamTodo));
+    }
+
+    public TeamTodoResDto updateTeamTodo(Long teamTodoId, TeamTodoUpdateDto teamTodoUpdateDto){
+        TeamTodo updateTeamTodo = teamTodoRepository.findById(teamTodoId).orElseThrow(()-> new CustomException(ExceptionCode.TEAMTODO_NOT_FOUND));
+
+        if (teamTodoUpdateDto.title() != null && !teamTodoUpdateDto.title().isEmpty())
+        {
+            updateTeamTodo.updateTitle(teamTodoUpdateDto.title());
+        }
+        if (teamTodoUpdateDto.contents() != null && !teamTodoUpdateDto.contents().isEmpty())
+        {
+            updateTeamTodo.updateContent(teamTodoUpdateDto.contents());
+        }
+        if (teamTodoUpdateDto.startLine() != null && !teamTodoUpdateDto.startLine().isEmpty())
+        {
+            updateTeamTodo.updateStartLine(teamTodoUpdateDto.startLine());
+        }
+        if (teamTodoUpdateDto.deadLine() != null && !teamTodoUpdateDto.deadLine().isEmpty())
+        {
+            updateTeamTodo.updateDeadLine(teamTodoUpdateDto.deadLine());
+        }
+
+        return  TeamTodoResDto.toDto(updateTeamTodo);
     }
 
     @Transactional(readOnly = true)

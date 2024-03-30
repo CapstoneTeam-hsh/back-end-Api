@@ -1,10 +1,8 @@
-package me.capstone.javis.todo.data.dto.request;
+package me.capstone.javis.teamtodo.data.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
 
-@Builder
-public record TodoUpdateReqDto(
+public record TeamTodoUpdateDto(
         @Schema(
                 example = "다이소 에서 살 물건들",
                 description = "투두 제목을 입력해주세요."

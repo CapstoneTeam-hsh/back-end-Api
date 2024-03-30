@@ -8,8 +8,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.capstone.javis.common.dto.CommonResponseDto;
 import me.capstone.javis.teamtodo.data.dto.request.TeamTodoReqDto;
+import me.capstone.javis.teamtodo.data.dto.request.TeamTodoUpdateDto;
 import me.capstone.javis.teamtodo.data.dto.response.TeamTodoResDto;
 import me.capstone.javis.teamtodo.service.TeamTodoService;
+import me.capstone.javis.todo.data.dto.request.TodoUpdateReqDto;
+import me.capstone.javis.todo.data.dto.response.TodoResDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -65,6 +68,19 @@ public class TeamTodoController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 new CommonResponseDto<>(
                         "그룹 투두가 성공적으로 생성되었습니다.",
+                        teamTodoResDto));
+    }
+
+    @Operation(summary = "그룹 투두리스트 수정", description = "그룹 투두리스트 내용을 수정합니다.")
+    @Parameter(name = "teamTodoId",description = "수정 할 그룹 투두의 id")
+    @PutMapping("/{teamTodoId}")
+    public ResponseEntity<CommonResponseDto<TeamTodoResDto>> updateTeamTodo(@PathVariable("teamTodoId") Long teamTodoId, @RequestBody TeamTodoUpdateDto teamTodoUpdateDto){
+        log.info("[updateTeamTodo] 그룹 투두를 수정합니다.");
+        TeamTodoResDto teamTodoResDto = teamTodoService.updateTeamTodo(teamTodoId,teamTodoUpdateDto);
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new CommonResponseDto<>(
+                        "그룹 투두 수정이 성공적으로 완료되었습니다.",
                         teamTodoResDto));
     }
 

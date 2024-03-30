@@ -92,7 +92,7 @@ public class TeamService {
         else {
             for (UserTeam userTeam : userTeamList) {
                 if (userTeam.getUser().getId() == user.getId()) {
-                    userRepository.deleteById(user.getId());
+                    userTeamRepository.deleteById(userTeam.getId());
                 }
             }
         }
