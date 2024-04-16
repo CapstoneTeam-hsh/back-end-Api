@@ -13,3 +13,5 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
 
+  jwt:
+    access-token-valid-time: 3600

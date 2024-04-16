@@ -29,7 +29,7 @@ public class TeamTodoService {
 
 
     public TeamTodoResDto getOneTeamTodo(Long teamTodoId){
-        TeamTodo teamTodo = teamTodoRepository.findById(teamTodoId).orElseThrow(()->new CustomException(ExceptionCode.TEAMTODO_NOT_FOUND));
+        TeamTodo teamTodo = teamTodoRepository.findById(teamTodoId).orElseThrow(()->new CustomException(ExceptionCode.TEAM_TODO_NOT_FOUND));
 
         return TeamTodoResDto.toDto(teamTodo);
     }
@@ -45,7 +45,7 @@ public class TeamTodoService {
     }
 
     public TeamTodoResDto updateTeamTodo(Long teamTodoId, TeamTodoUpdateDto teamTodoUpdateDto){
-        TeamTodo updateTeamTodo = teamTodoRepository.findById(teamTodoId).orElseThrow(()-> new CustomException(ExceptionCode.TEAMTODO_NOT_FOUND));
+        TeamTodo updateTeamTodo = teamTodoRepository.findById(teamTodoId).orElseThrow(()-> new CustomException(ExceptionCode.TEAM_TODO_NOT_FOUND));
 
         if (teamTodoUpdateDto.title() != null && !teamTodoUpdateDto.title().isEmpty())
         {

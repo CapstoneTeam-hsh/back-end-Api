@@ -1,9 +1,6 @@
 package me.capstone.javis.common.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,6 +11,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
+
 
 import java.security.Key;
 import java.util.Date;
@@ -27,7 +26,8 @@ public class JwtProvider {
 
     private Key secretKey;
 
-    private final long accessTokenValidTime = 1000L*60*60*24;
+    @Value("${spring.jwt.access-token-valid-time}")
+    private Long accessTokenValidTime;
     //private final long refreshTokenValidTime = 1000L*60*60*24*3;
 
     @PostConstruct
@@ -43,8 +43,8 @@ public class JwtProvider {
 
         Claims claims = Jwts.claims().setSubject(loginId);
         claims.put("roles",roles);
+        claims.put("type", "access");
         Date now = new Date();
-
         String token = Jwts.builder()
                 .signWith(secretKey)
                 .setClaims(claims)
@@ -71,17 +71,17 @@ public class JwtProvider {
     public String getUsername(String token)
     {
         log.info("[getUsername] 토큰 기반 회원 구별 정보 추출");
-        String info = Jwts.parserBuilder()
+        String loginId = Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
-        log.info("[getUsername] 토큰 기반 회원 구별 정보 추출 완료, info : {}",info);
-        return info;
+        log.info("[getUsername] 토큰 기반 회원 구별 정보 추출 완료, loginId : {}",loginId);
+        return loginId;
     }
 
-    public String resolveToken(HttpServletRequest request){
+    public String getAuthorizationToken(HttpServletRequest request){
         log.info("[resolveToken] HTTP 헤더에서 Token 값 추출");
         String token = request.getHeader("Authorization");
         try{
@@ -100,14 +100,18 @@ public class JwtProvider {
     */
     public boolean validateToken(String token) {
         log.info("[validateToken] 토큰 유효 체크 시작");
-        log.info("[validateToken] 해당 토큰 검사 token : {}",token);
         try{
             //복잡한 설정일 떈, Jwts.parserBuilder()를 이용
             Jws<Claims> claims = Jwts.parser()
                     .setSigningKey(secretKey)
                     .parseClaimsJws(token);
             return !claims.getBody().getExpiration().before(new Date());
-        }catch (Exception e){
+        }
+        catch (ExpiredJwtException ex){
+            log.error("[validateToken] 토큰 만료됨: {}", ex.getMessage());
+            throw ex;
+        }
+        catch (Exception e){
             log.info("[validateToken] 토큰 유효 체크 예외 발생");
             return false;
         }

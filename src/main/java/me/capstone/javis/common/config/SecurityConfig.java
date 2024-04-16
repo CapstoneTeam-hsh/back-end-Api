@@ -2,9 +2,10 @@ package me.capstone.javis.common.config;
 
 import lombok.RequiredArgsConstructor;
 
+import me.capstone.javis.common.exception.handler.JwtExceptionHandlerFilter;
 import me.capstone.javis.common.exception.security.CustomAccessDeniedHandler;
 import me.capstone.javis.common.exception.security.CustomAuthenticationEntryPoint;
-import me.capstone.javis.common.jwt.JwtAuthenticationFilter;
+import me.capstone.javis.common.jwt.JwtAuthFilter;
 import me.capstone.javis.common.jwt.JwtProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,13 +40,15 @@ public class SecurityConfig {
                                 .requestMatchers("**exception**").permitAll()
                                 .anyRequest().hasRole("USER")
                 )
+                .addFilterBefore(new JwtExceptionHandlerFilter(),
+                        UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthFilter(jwtProvider),
+                        UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exceptionHandling ->
                         exceptionHandling
                                 .accessDeniedHandler(new CustomAccessDeniedHandler())
                                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
-                )
-                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
-
+                );
         return httpSecurity.build();
     }
 }
