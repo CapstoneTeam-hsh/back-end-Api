@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,17 +32,14 @@ public class CategoryService {
     }
 
     public CategoryResDto makeCategory(String loginId, String name){
-        if(name == null)
-        {
-            name = "기본";
-        }
+        if(name == null) {name = "기본";}
+        final String reqName = name; //스트림 내에서 람다 표현식에서 사용되는 변수는 final 또는 effectively final 이어야 한다.
 
         User user = userRepository.findByLoginId(loginId).orElseThrow(() -> new CustomException(ExceptionCode.USER_NOT_FOUND));
         List<Category> categoryList = categoryRepository.findByUser(user);
-        for(Category category: categoryList){
-            if(category.getName().equals(name)){
-                throw new CustomException(ExceptionCode.DUPLICATE_CATEGORY_NAME);
-            }
+
+        if (categoryList.stream().anyMatch(category -> category.getName().equals(reqName))) {
+            throw new CustomException(ExceptionCode.DUPLICATE_CATEGORY_NAME);
         }
 
         Category category = Category.builder()

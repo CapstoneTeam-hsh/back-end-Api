@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -59,9 +58,10 @@ public class TeamService {
 
         List<UserTeam> userTeamList = team.getUserToTeamList();
 
+        //stream 사용으로 수정
         return userTeamList.stream()
                 .map(userTeam -> UserInfoResDto.toDto(userTeam.getUser()))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Transactional(readOnly = true)
@@ -73,7 +73,7 @@ public class TeamService {
     }
 
     @Transactional(readOnly = true)
-    public List<String> getTeamOfUsers(Long teamId) {
+    public List<String> getUsersOfTeam(Long teamId) {
         Team reqTeam = teamRepository.findById(teamId).orElseThrow(()-> new CustomException(ExceptionCode.TEAM_NOT_FOUND));
 
         List<String> userNameList = teamRepository.findAllUserByTeam(reqTeam);
@@ -90,13 +90,11 @@ public class TeamService {
             teamRepository.deleteById(team.getId());
         }
         else {
-            for (UserTeam userTeam : userTeamList) {
-                if (userTeam.getUser().getId() == user.getId()) {
-                    userTeamRepository.deleteById(userTeam.getId());
-                }
-            }
+            //stream 사용으로 수정, filter 조건에 맞으면 forEach 구문 수행.
+            userTeamList.stream()
+                    .filter(userTeam -> userTeam.getUser().getId() == user.getId())
+                    .forEach(userTeam -> userTeamRepository.deleteById(userTeam.getId()));
         }
     }
-
 
 }

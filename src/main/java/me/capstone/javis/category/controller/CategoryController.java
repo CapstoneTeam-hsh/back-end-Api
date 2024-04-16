@@ -11,8 +11,7 @@ import me.capstone.javis.category.service.CategoryService;
 import me.capstone.javis.common.dto.CommonResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,9 +31,7 @@ public class CategoryController {
     @GetMapping("/{categoryId}")
     public ResponseEntity<CommonResponseDto<CategoryResDto>> getCategory(@PathVariable("categoryId") Long categoryId){
         log.info("[getCategory] id에 해당하는 카테고리를 조회합니다.");
-
         CategoryResDto categoryResDto = categoryService.getOneCategory(categoryId);
-
         return ResponseEntity.status(HttpStatus.OK).body(
                 new CommonResponseDto<>(
                         "카테고리 단건 조회를 성공적으로 완료되었습니다.",
@@ -42,14 +39,12 @@ public class CategoryController {
 
     }
 
-
-
     @Operation(summary = "투두에 해당하는 카테고리 추가",description = "해당 투두의 카테고리를 셍성합니다.<br>카테고리 추가 화면")
     @PostMapping()
-    public ResponseEntity<CommonResponseDto<CategoryResDto>> createTodo(@RequestParam(required = false) String name){
+    public ResponseEntity<CommonResponseDto<CategoryResDto>> createTodo(@AuthenticationPrincipal UserDetails principal,
+                                                                        @RequestParam(required = false) String name){
         log.info("[createTodo] 해당 투두의 카테고리를 생성합니다. categoryName : {}", name);
-
-        String loginId = getLoginId();
+        String loginId = principal.getUsername();
         CategoryResDto categoryResDto = categoryService.makeCategory(loginId, name);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new CommonResponseDto<>(
@@ -60,9 +55,8 @@ public class CategoryController {
 
     @Operation(summary = "유저의 카테고리 리스트 조회", description = "유저의 카테고리 리스트를 전부 불러옵니다.<br>투두리스트 추가 화면, 메뉴 화면")
     @GetMapping()
-    public ResponseEntity<CommonResponseDto<List<String>>> getCategoryList(){
-
-        String loginId = getLoginId();
+    public ResponseEntity<CommonResponseDto<List<String>>> getCategoryList(@AuthenticationPrincipal UserDetails principal){
+        String loginId = principal.getUsername();
         List<String> categoryNames = categoryService.getCategoryNames(loginId);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new CommonResponseDto<>(
@@ -75,9 +69,7 @@ public class CategoryController {
     @Parameter(name = "categoryName", description = "카테고리 이름으로 유저의 카테고리를 삭제합니다.")
     @DeleteMapping()
     public ResponseEntity<CommonResponseDto<Void>> deleteCategory(@RequestParam("categoryName") String categoryName){
-
         categoryService.deleteCategory(categoryName);
-
         return ResponseEntity.status(HttpStatus.OK).body(
                 new CommonResponseDto<>(
                         "카테고리 삭제를 성공적으로 완료하였습니다.",
@@ -91,20 +83,13 @@ public class CategoryController {
             @Parameter(name = "categoryName", description = "수정할 카테고리 name")
     })
     @PutMapping()
-    public ResponseEntity<CommonResponseDto<CategoryResDto>> updateCategoryName(@RequestParam("categoryId")Long categoryId, @RequestParam("categoryName")String categoryName){
-
+    public ResponseEntity<CommonResponseDto<CategoryResDto>> updateCategoryName(@RequestParam("categoryId")Long categoryId,
+                                                                                @RequestParam("categoryName")String categoryName){
         CategoryResDto categoryResDto = categoryService.updateCategoryName(categoryId,categoryName);
-
         return ResponseEntity.status(HttpStatus.OK).body(
                 new CommonResponseDto<>(
                         "카테고리 이름 수정을 성공적으로 완료하였습니다.",
                         categoryResDto));
-    }
-
-    public String getLoginId(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        return userDetails.getUsername();
     }
 }
 

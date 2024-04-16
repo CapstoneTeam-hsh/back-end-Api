@@ -31,16 +31,16 @@ public class TeamCustomRepositoryImpl implements TeamCustomRepository {
                 .where(user.loginId.eq(reqUser.getLoginId()))
                 .fetch();
 
-        List<TeamResDto> allTeamOfUserList = new ArrayList<>();
-
-        for (Tuple teamTuple : allTeamOfUser){
-            Long teamId = teamTuple.get(team.id);
-            String teamName = teamTuple.get(team.name);
-            allTeamOfUserList.add(TeamResDto.builder()
+        List<TeamResDto> allTeamOfUserList = allTeamOfUser.stream()
+                .map(teamTuple ->{
+                    Long teamId = teamTuple.get(team.id);
+                    String teamName = teamTuple.get(team.name);
+                    return TeamResDto.builder()
                             .id(teamId)
                             .name(teamName)
-                    .build());
-        }
+                            .build();
+                }).toList();
+
         return allTeamOfUserList;
     }
 

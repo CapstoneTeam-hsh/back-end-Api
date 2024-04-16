@@ -28,6 +28,7 @@ import java.util.Set;
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler{
 
     //@Valid 유효성검사 실패 시
+    //@Valid 로 @RequestBody 에 매핑되는 DTO 클래스를 검증할 때 던져지는 예외는 MethodArgumentNotValidException
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         BindingResult bindingResult = ex.getBindingResult();
@@ -46,6 +47,8 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler{
     }
 
     // requestParam으로 입력받은 값의 유효성검사 실패
+    // @PathVariable 에 매핑되는 경로 파라미터 또는
+    // @RequestParam 에 매핑되는 쿼리 파라미터를 검증할 때 던져지는 예외는 ConstraintViolationException 타입
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<CommonResponseDto> handleContranintViolation(ConstraintViolationException ex){
         Map<String, String> errors = new HashMap<>();

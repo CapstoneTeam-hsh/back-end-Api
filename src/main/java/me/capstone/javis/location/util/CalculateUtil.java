@@ -11,6 +11,7 @@ public class CalculateUtil {
         return dist; //단위 meter
     }
 
+    //10진수를 radian으로 변환
     public static double deg2rad(double deg){
         return (deg * Math.PI/180.0);
     }

@@ -5,9 +5,9 @@ import lombok.RequiredArgsConstructor;
 import me.capstone.javis.category.data.repository.CategoryCustomRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static me.capstone.javis.category.data.domain.QCategory.category;
 import static me.capstone.javis.user.data.domain.QUser.user;
@@ -28,14 +28,9 @@ public class CategoryCustomRepositoryImpl implements CategoryCustomRepository {
                 .where(user.loginId.eq(loginId))
                 .fetch();
 
-        Set<String> nameSet = new HashSet<>();
+        //set으로 받을 필요가 있나? 중복된 이름의 카테고리가 존재할 수 있나?
 
-        for (String name : tuples){
-            nameSet.add(name);
-        }
-
-        return nameSet.stream()
-                .toList();
+        return tuples;
     }
 }
 

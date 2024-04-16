@@ -12,9 +12,6 @@ import me.capstone.javis.teamtodo.data.dto.request.TeamTodoReqDto;
 import me.capstone.javis.teamtodo.data.dto.request.TeamTodoUpdateDto;
 import me.capstone.javis.teamtodo.data.dto.response.TeamTodoResDto;
 import me.capstone.javis.teamtodo.data.repository.TeamTodoRepository;
-import me.capstone.javis.todo.data.domain.Todo;
-import me.capstone.javis.todo.data.dto.request.TodoUpdateReqDto;
-import me.capstone.javis.todo.data.dto.response.TodoResDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

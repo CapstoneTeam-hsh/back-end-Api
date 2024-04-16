@@ -3,12 +3,10 @@ package me.capstone.javis.teamtodo.data.repository.impl;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import me.capstone.javis.team.data.domain.Team;
 import me.capstone.javis.teamtodo.data.dto.response.TeamTodoResDto;
 import me.capstone.javis.teamtodo.data.repository.TeamTodoCustomRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static me.capstone.javis.team.data.domain.QTeam.team;
@@ -21,6 +19,7 @@ public class TeamTodoCustomRepositoryImpl implements TeamTodoCustomRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
 
+    // /teamTodo/team/{teamId} 그룹 투두 전체 조회
     @Override
     public List<TeamTodoResDto> findAllTeamTodoByTeam(Long reqTeamId) {
 
@@ -31,26 +30,18 @@ public class TeamTodoCustomRepositoryImpl implements TeamTodoCustomRepository {
                 .where(team.id.eq(reqTeamId))
                 .fetch();
 
-        List<TeamTodoResDto> allTeamTodoResDtoList = new ArrayList<>();
-
-        for (Tuple teamTodoTuple : allTeamTodo){
-            Long teamTodoId = teamTodoTuple.get(teamTodo.id);
-            String title = teamTodoTuple.get(teamTodo.title);
-            String contents = teamTodoTuple.get(teamTodo.contents);
-            String startLine = teamTodoTuple.get(teamTodo.startLine);
-            String deadLine = teamTodoTuple.get(teamTodo.deadLine);
-            Long teamId = teamTodoTuple.get(teamTodo.team.id);
-            Long locationId = teamTodoTuple.get(teamTodo.location.id);
-            allTeamTodoResDtoList.add(TeamTodoResDto.builder()
-                            .id(teamTodoId)
-                            .title(title)
-                            .contents(contents)
-                            .startLine(startLine)
-                            .deadLine(deadLine)
-                            .teamId(teamId)
-                            .locationId(locationId)
-                    .build());
-        }
+        //stream 사용으로 수정
+        List<TeamTodoResDto> allTeamTodoResDtoList = allTeamTodo.stream().map(
+                tuple -> TeamTodoResDto.builder()
+                        .id(tuple.get(teamTodo.id))
+                        .title(tuple.get(teamTodo.title))
+                        .contents(tuple.get(teamTodo.contents))
+                        .startLine(tuple.get(teamTodo.startLine))
+                        .deadLine(tuple.get(teamTodo.deadLine))
+                        .teamId(tuple.get(teamTodo.team.id))
+                        .locationId(tuple.get(teamTodo.location.id))
+                        .build()
+        ).toList();
 
         return allTeamTodoResDtoList;
     }

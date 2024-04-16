@@ -39,13 +39,17 @@ public class UserService {
         return SignUpResDto.toDto(user);
     }
 
-    public SignUpResDto signUp(SignUpReqDto userReqDto) {
+    public SignUpResDto signUp(SignUpReqDto signUpReqDto) {
+
+        if(userRepository.existsByLoginId(signUpReqDto.loginId())){
+            throw new CustomException(ExceptionCode.DUPLICATE_LOGIN_ID);
+        }
 
         User user = User.builder()
-                .name(userReqDto.name())
-                .loginId(userReqDto.loginId())
-                .password(passwordEncoder.encode(userReqDto.password()))
-                .email(userReqDto.email())
+                .name(signUpReqDto.name())
+                .loginId(signUpReqDto.loginId())
+                .password(passwordEncoder.encode(signUpReqDto.password()))
+                .email(signUpReqDto.email())
                 //단일 권한을 가진 리스트 생성, 하나의 요소를 가진 불변의 리스트 생성
                 .roles(Collections.singletonList("ROLE_USER"))
                 .build();

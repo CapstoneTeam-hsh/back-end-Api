@@ -12,10 +12,9 @@ import me.capstone.javis.todo.data.dto.response.TodoResDto;
 import me.capstone.javis.todo.service.TodoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.parameters.P;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name ="[Todo] Todo API", description = "투두 생성, 투두 조회, 투두 삭제")
@@ -42,10 +41,11 @@ public class TodoController {
 
     @Operation(summary = "투두리스트 추가",description = "해당 유저의 투두를 셍성합니다.<br>투두 추가 화면")
     @PostMapping()
-    public ResponseEntity<CommonResponseDto<TodoResDto>> createTodo(@RequestBody TodoReqDto todoReqDto){
+    public ResponseEntity<CommonResponseDto<TodoResDto>> createTodo(@AuthenticationPrincipal UserDetails principal,
+                                                                    @Validated @RequestBody TodoReqDto todoReqDto){
         log.info("[createTodo]  할일을 생성합니다.");
 
-        String loginId = getLoginId();
+        String loginId = principal.getUsername();
         TodoResDto todoResponseDto = todoService.saveTodo(loginId, todoReqDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(
@@ -57,7 +57,8 @@ public class TodoController {
     @Operation(summary = "투두리스트 수정", description = "투두리스트 내용을 수정합니다.")
     @Parameter(name = "todoId",description = "수정 할 투두의 id")
     @PutMapping("/{todoId}")
-    public ResponseEntity<CommonResponseDto<TodoResDto>> updateTodo(@PathVariable("todoId") Long todoId, @RequestBody TodoUpdateReqDto todoUpdateReqDto){
+    public ResponseEntity<CommonResponseDto<TodoResDto>> updateTodo(@PathVariable("todoId") Long todoId,
+                                                                    @RequestBody TodoUpdateReqDto todoUpdateReqDto){
         log.info("[updateTodo] 투두를 수정합니다.");
         TodoResDto todoResDto = todoService.updateTodo(todoId,todoUpdateReqDto);
 
@@ -78,14 +79,5 @@ public class TodoController {
                 new CommonResponseDto<>(
                         "투두 삭제가 성공적으로 완료되었습니다.",
                         null));
-    }
-
-    public String getLoginId(){
-        //SecurityContextHolder에서 현재 인증된 사용자의 정보를 담고 있는 Authentication 객체를 가져온다.
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //Authentcation객체가 가지고 있는 Principal 객체가 반환됩니다. 이 객체는 UserDetails 인터페이스를 구현한 사용자 정보 객체입니다.
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-
-        return userDetails.getUsername();
     }
 }

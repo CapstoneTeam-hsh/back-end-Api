@@ -12,8 +12,10 @@ import me.capstone.javis.user.data.dto.response.userhomePage.TodoIdAndNameResDto
 import me.capstone.javis.user.data.repository.UserCustomRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static me.capstone.javis.category.data.domain.QCategory.category;
 import static me.capstone.javis.team.data.domain.QTeam.team;
@@ -33,9 +35,10 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
         * 수정을 하는 시간을 가져야 할 듯.
         */
 
+
+        // /users//homepage/category 유저의 카테고리들과 각 카테고리에 해당하는 투두들 리턴
         @Override
         public List<CategoryAndTodosResDto> findCategoryAndTodosByLoginId(String loginId) {
-                //해당 튜플에, 유저 id, 유저 이름, 유저 프로필 사진 id, 앨범 id, 앨범 이름이 들어가있다.
                 List<Tuple> userHomeCategory = jpaQueryFactory
                         .select(category.id, category.name)
                         .from(user)
@@ -43,24 +46,17 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
                         .where(user.loginId.eq(loginId))
                         .fetch();
 
-                Set<Long> idSet = new HashSet<>();
-                List<Tuple> distinctTuples = new ArrayList<>();
 
-                for (Tuple tuple : userHomeCategory){
-                        Long categoryId = tuple.get(category.id);
-                        if(!idSet.contains(categoryId)){
-                                idSet.add(categoryId);
-                                distinctTuples.add(tuple);
-                        }
-                }
-
+                //카테고리 id - 카테고리 이름 의 key-value 형태로 저장
                 Map<Long,String> categoryNameMap = new HashMap<>();
 
-                distinctTuples.forEach(tuple -> {
+                userHomeCategory.forEach(tuple -> {
                         Long categoryMappingId = tuple.get(category.id);
                         categoryNameMap.put(categoryMappingId,tuple.get(category.name));
                 });
 
+
+                // 각 카테고리에 해당하는 모든 투두를 저장할 dto 배열
                 List<CategoryAndTodosResDto> categoryTodos = new ArrayList<>();
 
                 for (Long categoryId : categoryNameMap.keySet()){
@@ -71,16 +67,15 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
                                 .where(category.id.eq(categoryId))
                                 .fetch();
 
-
-                        List<TodoIdAndNameResDto> todoList = new ArrayList<>();
-                        todoIdAndTitle.forEach(tuple -> {
-                                todoList.add(TodoIdAndNameResDto.builder()
-                                        .todoId(tuple.get(todo.id))
-                                        .title(tuple.get(todo.title))
-                                        .startLine(tuple.get(todo.startLine))
-                                        .deadLine(tuple.get(todo.deadLine))
-                                        .build());
-                                });
+                        //stream 사용으로 수정
+                        List<TodoIdAndNameResDto> todoList = todoIdAndTitle.stream().map(
+                                        tuple -> TodoIdAndNameResDto.builder()
+                                                .todoId(tuple.get(todo.id))
+                                                .title(tuple.get(todo.title))
+                                                .startLine(tuple.get(todo.startLine))
+                                                .deadLine(tuple.get(todo.deadLine))
+                                                .build())
+                                .toList();
 
                         //이부분 모호한데 나중에 수정해보자
                         String categoryName = todoIdAndTitle.isEmpty() ? categoryNameMap.get(categoryId) : todoIdAndTitle.get(0).get(category.name);
@@ -95,9 +90,9 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
                 return categoryTodos;
         }
 
+        //users/calendar 유저의 카테고리들과 각 카테고리에 해당하는 투두 전체 리턴
         @Override
         public List<CategoryAndAllTodoResDto> findCategoryAndAllTodosByLoginId(String loginId) {
-                //해당 튜플에, 유저 id, 유저 이름, 유저 프로필 사진 id, 앨범 id, 앨범 이름이 들어가있다.
                 List<Tuple> userCalendarCategory = jpaQueryFactory
                         .select(category.id, category.name)
                         .from(user)
@@ -105,24 +100,15 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
                         .where(user.loginId.eq(loginId))
                         .fetch();
 
-                Set<Long> idSet = new HashSet<>();
-                List<Tuple> distinctTuples = new ArrayList<>();
-
-                for (Tuple tuple : userCalendarCategory){
-                        Long categoryId = tuple.get(category.id);
-                        if(!idSet.contains(categoryId)){
-                                idSet.add(categoryId);
-                                distinctTuples.add(tuple);
-                        }
-                }
-
+                //카테고리 id - 카테고리 이름 의 key-value 형태로 저장
                 Map<Long,String> categoryNameMap = new HashMap<>();
 
-                distinctTuples.forEach(tuple -> {
+                userCalendarCategory.forEach(tuple -> {
                         Long categoryMappingId = tuple.get(category.id);
                         categoryNameMap.put(categoryMappingId,tuple.get(category.name));
                 });
 
+                // 각 카테고리에 해당하는 모든 투두를 저장할 dto 배열
                 List<CategoryAndAllTodoResDto> categoryAllTodos = new ArrayList<>();
 
                 for (Long categoryId : categoryNameMap.keySet()){
@@ -134,17 +120,19 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
                                 .fetch();
 
 
-                        List<AllTodoResDto> allTodoList = new ArrayList<>();
-                        allTodos.forEach(tuple -> {
-                                allTodoList.add(AllTodoResDto.builder()
-                                                .todoId(tuple.get(todo.id))
-                                                .title(tuple.get(todo.title))
-                                                .contents(tuple.get(todo.contents))
-                                                .completed(tuple.get(todo.completed))
-                                                .startLine(tuple.get(todo.startLine))
-                                                .deadLine(tuple.get(todo.deadLine))
-                                                .build());
-                        });
+                        //stream 사용으로 수정
+                        List<AllTodoResDto> allTodoList = allTodos.stream().map(
+                                tuple -> AllTodoResDto.builder()
+                                        .todoId(tuple.get(todo.id))
+                                        .title(tuple.get(todo.title))
+                                        .contents(tuple.get(todo.contents))
+                                        .completed(tuple.get(todo.completed))
+                                        .startLine(tuple.get(todo.startLine))
+                                        .deadLine(tuple.get(todo.deadLine))
+                                        .build())
+                                .toList();
+                                //collect(Collectors.toList()) 랑 같은 의미.
+
 
                         //이부분 모호한데 나중에 수정해보자
                         String categoryName = allTodos.isEmpty() ? categoryNameMap.get(categoryId) : allTodos.get(0).get(category.name);
@@ -154,15 +142,13 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
                                 .categoryName(categoryName)
                                 .allTodoList(allTodoList)
                                 .build());
-
                 }
                 return categoryAllTodos;
         }
-
-
+        
+        //users/homepage/team 그룹 과 해당 그룹의 투두들을 리턴
         @Override
         public List<TeamAndTeamTodosResDto> findTeamAndTeamTodosByLoginId(String loginId) {
-                //해당 튜플에, 유저 id, 유저 이름, 유저 프로필 사진 id, 앨범 id, 앨범 이름이 들어가있다.
                 List<Tuple>  userHomeTeam = jpaQueryFactory
                         .select(team.id, team.name)
                         .from(user)
@@ -190,18 +176,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
                                 .where(team.id.eq(teamId))
                                 .fetch();
 
-
-//                        List<TodoIdAndNameResDto> todoList = new ArrayList<>();
-//                        todoIdAndTitle.forEach(tuple -> {
-//                                todoList.add(TodoIdAndNameResDto.builder()
-//                                        .todoId(tuple.get(todo.id))
-//                                        .title(tuple.get(todo.title))
-//                                        .startLine(tuple.get(todo.startLine))
-//                                        .deadLine(tuple.get(todo.deadLine))
-//                                        .build());
-//                        });
-
-                        //주원이가 stream을 이용하여 코드 수정을 해줬는데 오류 없으면 이 방향으로 나아가야 할듯.
+                        //stream 사용으로 수정
                         List<TeamTodoIdAndNameDto> teamTodoList = teamTodoIdAndTitle.stream()
                                 .map(tuple -> TeamTodoIdAndNameDto.builder()
                                         .teamTodoId(tuple.get(teamTodo.id))

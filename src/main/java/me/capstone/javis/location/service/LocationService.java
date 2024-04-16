@@ -15,7 +15,6 @@ import me.capstone.javis.user.data.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static me.capstone.javis.location.util.CalculateUtil.calculateDistance;
@@ -54,16 +53,14 @@ public class LocationService {
     {
         User user = userRepository.findByLoginId(loginId).orElseThrow(()-> new CustomException(ExceptionCode.USER_NOT_FOUND));
         List<TodoSimpleInfoResDto> todoSimpleList = todoRepository.findTodoListByUser(user);
-        List<TodoSimpleInfoResDto> resultTodoList = new ArrayList<>();
 
-        for (TodoSimpleInfoResDto todoSimple : todoSimpleList){
-            System.out.println(todoSimple);
-            double distance = calculateDistance(latitude, longitude,todoSimple.latitude(),todoSimple.longitude());
-            if (distance <= setDistance) {
-                // 거리가 distance threshold 내에 있는 위치를 결과 리스트에 추가
-                resultTodoList.add(todoSimple);
-            }
-        }
+        //stream을 사용하여 해당 리스트에 좌표거리가 닿는 투두를 리스트에 담는다.
+        List<TodoSimpleInfoResDto> resultTodoList = todoSimpleList.stream()
+                .filter(todoSimple -> {
+                    double distance = calculateDistance(latitude, longitude, todoSimple.latitude(), todoSimple.longitude());
+                    return distance <= setDistance; //이 내용이 true면 리스트에 해당 요소를 유지시킨다.
+                })
+                .toList();
 
         return resultTodoList;
     }

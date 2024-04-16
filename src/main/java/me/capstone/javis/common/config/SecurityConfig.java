@@ -34,7 +34,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(requests ->
                         requests
                                 .requestMatchers("/swagger-resources/**", "/swagger-ui/index.html", "/webjars/**", "/swagger/**", "/users/exception", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
-                                .requestMatchers("/users/sign-in", "/users/sign-up").permitAll()
+                                .requestMatchers("/users/sign-in", "/users/sign-up","/sse/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/users").permitAll()
                                 .requestMatchers("**exception**").permitAll()
                                 .anyRequest().hasRole("USER")
