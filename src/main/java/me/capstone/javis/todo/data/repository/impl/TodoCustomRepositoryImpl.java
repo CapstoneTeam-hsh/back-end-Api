@@ -4,6 +4,7 @@ import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import me.capstone.javis.todo.data.dto.response.TodoSimpleInfoResDto;
+import me.capstone.javis.todo.data.dto.response.TodoSseResDto;
 import me.capstone.javis.todo.data.repository.TodoCustomRepository;
 import me.capstone.javis.user.data.domain.User;
 import org.springframework.stereotype.Repository;
@@ -45,6 +46,23 @@ public class TodoCustomRepositoryImpl implements TodoCustomRepository {
         ).toList();
 
         return todoSimpleInfoResDtoList;
+    }
 
+    public List<TodoSseResDto> findTodoAndUserId(){
+        List<Tuple> allTodoAndUserId= jpaQueryFactory
+                .select(user.id, todo.id,todo.title,todo.deadLine)
+                .from(user)
+                .join(category).on(user.id.eq(category.user.id))
+                .join(todo).on(todo.category.id.eq(category.id))
+                .fetch();
+
+        return allTodoAndUserId.stream()
+                .map(tuple -> TodoSseResDto.builder()
+                        .userId(tuple.get(user.id))
+                        .todoId(tuple.get(todo.id))
+                        .title(tuple.get(todo.title))
+                        .deadLine(tuple.get(todo.deadLine))
+                        .build())
+                .toList();
     }
 }
