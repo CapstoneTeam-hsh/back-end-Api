@@ -25,14 +25,14 @@ public record TeamTodoReqDto(
         )
         String contents,
 
-        @Pattern(regexp = "(19|20)\\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$")
+        //@Pattern(regexp = "(19|20)\\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$")
         @Schema(
                 example = "2024-10-29",
                 description = "시작 날짜를 작성해주세요."
         )
         String startLine,
 
-        @Pattern(regexp = "(19|20)\\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$")
+        //@Pattern(regexp = "(19|20)\\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$")
         @Schema(
                 example = "2024-10-29",
                 description = "마감 날짜를 작성해주세요."
