@@ -63,7 +63,7 @@ public class SseService {
     }
 
     //매일 12시 정각에 메서드 실행
-    @Scheduled(cron = "0 0 12 * * *")
+    @Scheduled(cron = "0/5 * * * * *")
     public void send() throws ParseException {
         List<TodoSseResDto> result = todoRepository.findTodoAndUserId();
         String todayFm = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));
