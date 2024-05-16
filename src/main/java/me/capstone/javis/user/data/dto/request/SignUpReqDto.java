@@ -11,7 +11,7 @@ import lombok.Builder;
 public record SignUpReqDto(
 
         @Size(min = 2, max = 8)
-        @Pattern(regexp = "[가-힣]+$", message = "이름은 한글로 2자 이상 입력해야합니다.")
+        //@Pattern(regexp = "[가-힣]+$", message = "이름은 한글로 2자 이상 입력해야합니다.")
         @Schema(
                 example = "홍길순",
                 description = "유저의 이름을 입력해주세요"
