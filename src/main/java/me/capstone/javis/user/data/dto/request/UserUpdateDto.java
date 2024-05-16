@@ -7,8 +7,6 @@ import lombok.Builder;
 @Builder
 public record UserUpdateDto(
 
-        @Size(min = 2, max = 8, message = "2 ~ 8 자 사이로 이름을 작성 해 주세요.")
-        @Pattern(regexp = "[가-힣]+$", message = "이름은 한글로 작성 해야 합니다.")
         @Schema(
                 example = "홍길순",
                 description = "유저의 이름을 입력해주세요"

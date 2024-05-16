@@ -8,14 +8,20 @@ import me.capstone.javis.location.data.domain.Location;
 import me.capstone.javis.location.data.dto.request.LocationReqDto;
 import me.capstone.javis.location.data.dto.response.LocationResDto;
 import me.capstone.javis.location.data.repository.LocationRepository;
+import me.capstone.javis.team.data.domain.Team;
+import me.capstone.javis.teamtodo.data.repository.TeamTodoRepository;
 import me.capstone.javis.todo.data.dto.response.TodoSimpleInfoResDto;
 import me.capstone.javis.todo.data.repository.TodoRepository;
 import me.capstone.javis.user.data.domain.User;
+import me.capstone.javis.user.data.dto.response.userhomePage.TeamAndTeamTodosResDto;
 import me.capstone.javis.user.data.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static me.capstone.javis.location.util.CalculateUtil.calculateDistance;
 
@@ -29,6 +35,7 @@ public class LocationService {
     private final LocationRepository locationRepository;
     private final UserRepository userRepository;
     private final TodoRepository todoRepository;
+    private final TeamTodoRepository teamTodoRepository;
 
     private static double setDistance = 50.0;
 
@@ -48,14 +55,17 @@ public class LocationService {
         return LocationResDto.toDto(locationRepository.save(location));
     }
 
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     public List<TodoSimpleInfoResDto> calculateLocation(String loginId,double latitude, double longitude)
     {
         User user = userRepository.findByLoginId(loginId).orElseThrow(()-> new CustomException(ExceptionCode.USER_NOT_FOUND));
         List<TodoSimpleInfoResDto> todoSimpleList = todoRepository.findTodoListByUser(user);
+        List<TodoSimpleInfoResDto> teamTodoSimpleList = userRepository.findAllTeamTodosByLoginId(loginId);
+        List<TodoSimpleInfoResDto> combinedList = Stream.concat(todoSimpleList.stream(), teamTodoSimpleList.stream())
+                .collect(Collectors.toList());
 
         //stream을 사용하여 해당 리스트에 좌표거리가 닿는 투두를 리스트에 담는다.
-        List<TodoSimpleInfoResDto> resultTodoList = todoSimpleList.stream()
+        List<TodoSimpleInfoResDto> resultTodoList = combinedList.stream()
                 .filter(todoSimple -> {
                     double distance = calculateDistance(latitude, longitude, todoSimple.latitude(), todoSimple.longitude());
                     return distance <= setDistance; //이 내용이 true면 리스트에 해당 요소를 유지시킨다.
@@ -71,6 +81,15 @@ public class LocationService {
         User user = userRepository.findByLoginId(loginId).orElseThrow(()-> new CustomException(ExceptionCode.USER_NOT_FOUND));
         List<TodoSimpleInfoResDto> todoSimpleList = todoRepository.findTodoListByUser(user);
         return todoSimpleList;
+    }
+
+    @Transactional(readOnly = true)
+    public List<TodoSimpleInfoResDto> getTeamTodo(String loginId)
+    {
+        User user = userRepository.findByLoginId(loginId).orElseThrow(()-> new CustomException(ExceptionCode.USER_NOT_FOUND));
+        List<TodoSimpleInfoResDto> teamTodoSimpleList = userRepository.findAllTeamTodosByLoginId(loginId);
+
+        return teamTodoSimpleList;
     }
 
     public LocationResDto updateLocation(Long locationId, LocationReqDto locationReqDto){

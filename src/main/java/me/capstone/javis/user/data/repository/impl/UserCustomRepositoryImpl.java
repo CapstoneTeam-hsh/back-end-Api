@@ -3,6 +3,7 @@ package me.capstone.javis.user.data.repository.impl;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import me.capstone.javis.todo.data.dto.response.TodoSimpleInfoResDto;
 import me.capstone.javis.user.data.dto.response.calendar.AllTodoResDto;
 import me.capstone.javis.user.data.dto.response.calendar.CategoryAndAllTodoResDto;
 import me.capstone.javis.user.data.dto.response.userhomePage.CategoryAndTodosResDto;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import static me.capstone.javis.category.data.domain.QCategory.category;
+import static me.capstone.javis.location.data.domain.QLocation.location;
 import static me.capstone.javis.team.data.domain.QTeam.team;
 import static me.capstone.javis.teamtodo.data.domain.QTeamTodo.teamTodo;
 import static me.capstone.javis.todo.data.domain.QTodo.todo;
@@ -197,6 +199,41 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
 
                 }
                 return teamAndTeamTodo;
+        }
+
+        @Override
+        public List<TodoSimpleInfoResDto> findAllTeamTodosByLoginId(String loginId) {
+                List<Long>  userTeamIdList = jpaQueryFactory
+                        .select(team.id)
+                        .from(user)
+                        .join(userTeam).on(user.id.eq(userTeam.user.id))
+                        .join(team).on(userTeam.team.id.eq(team.id))
+                        .where(user.loginId.eq(loginId))
+                        .fetch();
+
+                List<TodoSimpleInfoResDto> teamTodoSimpleList = new ArrayList<>();
+                for (Long teamId : userTeamIdList){
+                        List<Tuple> teamTodos = jpaQueryFactory
+                                .select(teamTodo.id,teamTodo.title,teamTodo.checkAlarm,location.latitude,location.longitude)
+                                .from(team)
+                                .join(teamTodo).on(team.id.eq(teamTodo.team.id))
+                                .join(location).on(teamTodo.location.id.eq(location.id))
+                                .where(team.id.eq(teamId))
+                                .fetch();
+
+                        for(Tuple Todo : teamTodos){
+                                teamTodoSimpleList.add(TodoSimpleInfoResDto.builder()
+                                                .id(Todo.get(teamTodo.id))
+                                                .title(Todo.get(teamTodo.title))
+                                                .checkAlarm(Todo.get(teamTodo.checkAlarm))
+                                                .longitude(Todo.get(location.longitude))
+                                                .latitude(Todo.get(location.latitude))
+                                        .build());
+                        }
+                }
+
+
+                return teamTodoSimpleList;
         }
 
 

@@ -24,6 +24,8 @@ public class QTeamTodo extends EntityPathBase<TeamTodo> {
 
     public final me.capstone.javis.common.domain.QBaseTimeEntity _super = new me.capstone.javis.common.domain.QBaseTimeEntity(this);
 
+    public final BooleanPath checkAlarm = createBoolean("checkAlarm");
+
     public final BooleanPath completed = createBoolean("completed");
 
     public final StringPath contents = createString("contents");

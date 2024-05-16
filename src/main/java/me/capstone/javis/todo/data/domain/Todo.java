@@ -37,9 +37,13 @@ public class Todo extends BaseTimeEntity {
     @Column(nullable = false)
     private String deadLine;
 
+    @Column(nullable = false)
+    private Boolean checkAlarm;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id",nullable = false)
     private Category category;
+
 
     //cascade 전략을 사용하여, todo를 삭제하면, 해당 Location도 삭제된다.
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -55,6 +59,7 @@ public class Todo extends BaseTimeEntity {
         this.category = category;
         this.location = location;
         this.completed = false;
+        this.checkAlarm = false;
     }
 
     public void updateTitle(String title){this.title = title;}

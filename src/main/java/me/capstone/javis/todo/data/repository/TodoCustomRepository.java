@@ -11,6 +11,4 @@ public interface TodoCustomRepository {
     List<TodoSimpleInfoResDto> findTodoListByUser(User user);
 
     List<TodoSseResDto> findTodoAndUserId();
-
-    //Long findUserIdByTodoId(Long todoId);
 }

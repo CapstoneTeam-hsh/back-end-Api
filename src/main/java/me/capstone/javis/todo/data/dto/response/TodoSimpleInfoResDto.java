@@ -6,6 +6,7 @@ import lombok.Builder;
 public record TodoSimpleInfoResDto(
         Long id,
         String title,
+        Boolean checkAlarm,
         double latitude,
         double longitude
 ){}

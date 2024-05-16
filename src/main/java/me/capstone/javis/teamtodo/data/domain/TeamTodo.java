@@ -37,6 +37,9 @@ public class TeamTodo extends BaseTimeEntity {
     @Column(nullable = false)
     private String deadLine;
 
+    @Column(nullable = false)
+    private Boolean checkAlarm;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id", nullable = false)
     private Team team;
@@ -54,6 +57,7 @@ public class TeamTodo extends BaseTimeEntity {
         this.team =team;
         this.location =location;
         this.completed = false;
+        this.checkAlarm = false;
     }
 
     public void updateTitle(String title){this.title = title;}

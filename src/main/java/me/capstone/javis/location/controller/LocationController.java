@@ -114,4 +114,16 @@ public class LocationController {
                         todoSimpleInfoResDtoList));
     }
 
+    @Operation(summary = "Team-Todo-Get메서드 테스트", description = "팀의 Todo들을 잘 조회하는지 테스트")
+    @GetMapping("/team/Test")
+    public ResponseEntity<CommonResponseDto<List<TodoSimpleInfoResDto>>> getTeamTodo(@AuthenticationPrincipal UserDetails principal){
+        log.info("[getUserTodo] 유저 할일을 조회하는 메서드를 테스트 하기  위함");
+        String loginId = principal.getUsername();
+        List<TodoSimpleInfoResDto> todoSimpleInfoResDtoList = locationService.getTeamTodo(loginId);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new CommonResponseDto<>(
+                        "현재 좌표에 해당하는 할 일들을 성공적으로 조회하였습니다.",
+                        todoSimpleInfoResDtoList));
+    }
+
 }

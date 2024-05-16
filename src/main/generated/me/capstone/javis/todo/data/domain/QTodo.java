@@ -26,6 +26,8 @@ public class QTodo extends EntityPathBase<Todo> {
 
     public final me.capstone.javis.category.data.domain.QCategory category;
 
+    public final BooleanPath checkAlarm = createBoolean("checkAlarm");
+
     public final BooleanPath completed = createBoolean("completed");
 
     public final StringPath contents = createString("contents");

@@ -19,13 +19,11 @@ public record TeamTodoUpdateDto(
         )
         String contents,
 
-        @Pattern(regexp = "(19|20)\\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$", message = "예시: '2024-10-29' 와 같은 형식으로 입력해주세요.")
         @Schema(
                 example = "2024-10-29",
                 description = "시작 시간을 작성해주세요."
         )
         String startLine,
-        @Pattern(regexp = "(19|20)\\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$", message = "예시: '2024-10-29' 와 같은 형식으로 입력해주세요.")
         @Schema(
                 example = "2024-10-29",
                 description = "마감 기한을 작성해주세요."

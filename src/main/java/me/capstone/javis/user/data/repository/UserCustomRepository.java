@@ -1,5 +1,6 @@
 package me.capstone.javis.user.data.repository;
 
+import me.capstone.javis.todo.data.dto.response.TodoSimpleInfoResDto;
 import me.capstone.javis.user.data.dto.response.calendar.CategoryAndAllTodoResDto;
 import me.capstone.javis.user.data.dto.response.userhomePage.CategoryAndTodosResDto;
 import me.capstone.javis.user.data.dto.response.userhomePage.TeamAndTeamTodosResDto;
@@ -13,4 +14,6 @@ public interface UserCustomRepository {
     List<CategoryAndAllTodoResDto> findCategoryAndAllTodosByLoginId(String loginId);
 
     List<TeamAndTeamTodosResDto> findTeamAndTeamTodosByLoginId(String loginId);
+
+    List<TodoSimpleInfoResDto> findAllTeamTodosByLoginId(String loginId);
 }
